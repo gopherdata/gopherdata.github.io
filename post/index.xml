@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on GopherData</title>
+    <link>https://gopherdata.io/post/index.xml</link>
+    <description>Recent content in Posts on GopherData</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 GopherData</copyright>
+    <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Welcome to GopherData</title>
+      <link>https://gopherdata.io/post/introduction_to_gopherdata</link>
+      <pubDate>Sat, 11 Mar 2017 12:00:00 +0000</pubDate>
+      
+      <guid>https://gopherdata.io/post/introduction_to_gopherdata</guid>
+      <description>&lt;p&gt;(Author: Daniel Whitenack, @dwhitena on &lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
+
+&lt;p&gt;Welcome to GopherData!  This site/organization intends to be a place for all Gophers (i.e., go programmers) doing data analysis, science, numerical computing, or anything else data/math related.  It&amp;rsquo;s also a place where non-Gophers can learn about doing these things in Go. The site to will serve as a hub of info about related events and an eventual GopherData conference.&lt;/p&gt;
+
+&lt;p&gt;If you have ideas about how this site/organization can function best or any related feeback please reach out the @dwhitena on Twitter or Gophers Slack.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Key Activities&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Blog posts&lt;/li&gt;
+&lt;li&gt;Curated resources&lt;/li&gt;
+&lt;li&gt;Discussion outlets&lt;/li&gt;
+&lt;li&gt;Online and in-person events&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Topics of interest&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Data Science&lt;/li&gt;
+&lt;li&gt;Data Engineering&lt;/li&gt;
+&lt;li&gt;Scientific Computing&lt;/li&gt;
+&lt;li&gt;Numerical Computing&lt;/li&gt;
+&lt;li&gt;Machine Learning&lt;/li&gt;
+&lt;li&gt;Artificial Intelligence&lt;/li&gt;
+&lt;li&gt;Data Visualization&lt;/li&gt;
+&lt;li&gt;Data Cleaning/Munging&lt;/li&gt;
+&lt;li&gt;Databases&lt;/li&gt;
+&lt;li&gt;Distributed Computing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Get Involved&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;We are going to start publishing blog posts from our community.  If you have an idea for a blog post, please sign up &lt;a href=&#34;https://docs.google.com/spreadsheets/d/19YnjEGnsmgOnXRqecbIObvYe2-ZHxaItWCjnvadIzVc/edit?usp=sharing&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;If you are interested in helping sponsor or organize a GopherData conference, please contact @dwhitena on Twitter or Gophers Slack.&lt;/li&gt;
+&lt;li&gt;If you know of good related resources (packages, events, etc.), please PR github.com/gopherdata/www or contact @dwhitena on Twitter or Gophers Slack.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
