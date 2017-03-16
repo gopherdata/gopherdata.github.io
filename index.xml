@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>GopherData on GopherData</title>
-    <link>https://gopherdata.io/index.xml</link>
+    <link>http://gopherdata.io/index.xml</link>
     <description>Recent content in GopherData on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,20 +12,20 @@
     
     <item>
       <title>GopherData Conference</title>
-      <link>https://gopherdata.io/talk/gopherdata</link>
+      <link>http://gopherdata.io/talk/gopherdata</link>
       <pubDate>Wed, 01 Jan 2042 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/talk/gopherdata</guid>
+      <guid>http://gopherdata.io/talk/gopherdata</guid>
       <description>&lt;p&gt;More details, actual dates (hopefully sooner than 2042), and details coming soon!&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Welcome to GopherData</title>
-      <link>https://gopherdata.io/post/introduction_to_gopherdata</link>
+      <link>http://gopherdata.io/post/introduction_to_gopherdata</link>
       <pubDate>Sat, 11 Mar 2017 12:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/post/introduction_to_gopherdata</guid>
+      <guid>http://gopherdata.io/post/introduction_to_gopherdata</guid>
       <description>&lt;p&gt;(Author: Daniel Whitenack, @dwhitena on &lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
 
 &lt;p&gt;Welcome to GopherData!  This site/organization intends to be a place for all Gophers (i.e., go programmers) doing data analysis, science, numerical computing, or anything else data/math related.  It&amp;rsquo;s also a place where non-Gophers can learn about doing these things in Go. The site to will serve as a hub of info about related events and an eventual GopherData conference.&lt;/p&gt;
@@ -68,10 +68,10 @@
     
     <item>
       <title>Deep Learning</title>
-      <link>https://gopherdata.io/project/deep-learning</link>
+      <link>http://gopherdata.io/project/deep-learning</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/project/deep-learning</guid>
+      <guid>http://gopherdata.io/project/deep-learning</guid>
       <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
 
 &lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
@@ -86,29 +86,29 @@
     
     <item>
       <title>External Project</title>
-      <link>https://gopherdata.io/project/example-external-project</link>
+      <link>http://gopherdata.io/project/example-external-project</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/project/example-external-project</guid>
+      <guid>http://gopherdata.io/project/example-external-project</guid>
       <description></description>
     </item>
     
     <item>
       <title>A Person Re-Identification System For Mobile Devices</title>
-      <link>https://gopherdata.io/publication/person-re-identification</link>
+      <link>http://gopherdata.io/publication/person-re-identification</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/publication/person-re-identification</guid>
+      <guid>http://gopherdata.io/publication/person-re-identification</guid>
       <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Mobile visual clothing search</title>
-      <link>https://gopherdata.io/publication/clothing-search</link>
+      <link>http://gopherdata.io/publication/clothing-search</link>
       <pubDate>Mon, 01 Jul 2013 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/publication/clothing-search</guid>
+      <guid>http://gopherdata.io/publication/clothing-search</guid>
       <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
 </description>
     </item>

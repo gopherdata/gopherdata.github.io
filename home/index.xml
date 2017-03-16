@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Homes on GopherData</title>
-    <link>https://gopherdata.io/home/index.xml</link>
+    <link>http://gopherdata.io/home/index.xml</link>
     <description>Recent content in Homes on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>

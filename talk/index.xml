@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent &amp; Upcoming Events on GopherData</title>
-    <link>https://gopherdata.io/talk/index.xml</link>
+    <link>http://gopherdata.io/talk/index.xml</link>
     <description>Recent content in Recent &amp; Upcoming Events on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>GopherData Conference</title>
-      <link>https://gopherdata.io/talk/gopherdata</link>
+      <link>http://gopherdata.io/talk/gopherdata</link>
       <pubDate>Wed, 01 Jan 2042 00:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/talk/gopherdata</guid>
+      <guid>http://gopherdata.io/talk/gopherdata</guid>
       <description>&lt;p&gt;More details, actual dates (hopefully sooner than 2042), and details coming soon!&lt;/p&gt;
 </description>
     </item>

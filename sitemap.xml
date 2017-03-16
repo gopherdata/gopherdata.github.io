@@ -4,7 +4,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/talk/gopherdata</loc>
+      <loc>http://gopherdata.io/talk/gopherdata</loc>
       <lastmod>2042-01-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -12,7 +12,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/post/introduction_to_gopherdata</loc>
+      <loc>http://gopherdata.io/post/introduction_to_gopherdata</loc>
       <lastmod>2017-03-11T12:00:00+00:00</lastmod>
     </url>
     
@@ -20,7 +20,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/tags/academic</loc>
+      <loc>http://gopherdata.io/tags/academic</loc>
       <lastmod>2017-01-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -28,7 +28,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/post</loc>
+      <loc>http://gopherdata.io/post</loc>
       <lastmod>2017-01-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -36,7 +36,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication</loc>
+      <loc>http://gopherdata.io/publication</loc>
       <lastmod>2017-01-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -44,7 +44,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/talk</loc>
+      <loc>http://gopherdata.io/talk</loc>
       <lastmod>2017-01-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -52,7 +52,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/project/deep-learning</loc>
+      <loc>http://gopherdata.io/project/deep-learning</loc>
       <lastmod>2016-04-27T00:00:00+00:00</lastmod>
     </url>
     
@@ -60,7 +60,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/project/example-external-project</loc>
+      <loc>http://gopherdata.io/project/example-external-project</loc>
       <lastmod>2016-04-27T00:00:00+00:00</lastmod>
     </url>
     
@@ -68,7 +68,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication/person-re-identification</loc>
+      <loc>http://gopherdata.io/publication/person-re-identification</loc>
       <lastmod>2015-09-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -76,7 +76,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication/clothing-search</loc>
+      <loc>http://gopherdata.io/publication/clothing-search</loc>
       <lastmod>2013-07-01T00:00:00+00:00</lastmod>
     </url>
     
@@ -84,7 +84,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication_types/1</loc>
+      <loc>http://gopherdata.io/publication_types/1</loc>
       <lastmod>2013-07-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -93,7 +93,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication_types/2</loc>
+      <loc>http://gopherdata.io/publication_types/2</loc>
       <lastmod>2015-09-01T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -102,7 +102,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/categories</loc>
+      <loc>http://gopherdata.io/categories</loc>
       <priority>0</priority>
     </url>
     
@@ -110,7 +110,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/tags/deep-learning</loc>
+      <loc>http://gopherdata.io/tags/deep-learning</loc>
       <lastmod>2016-04-27T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -119,7 +119,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/tags/demo</loc>
+      <loc>http://gopherdata.io/tags/demo</loc>
       <lastmod>2016-04-27T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -128,7 +128,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/</loc>
+      <loc>http://gopherdata.io/</loc>
       <lastmod>2016-04-20T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -137,7 +137,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/tags/hugo</loc>
+      <loc>http://gopherdata.io/tags/hugo</loc>
       <lastmod>2017-03-11T12:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -146,7 +146,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/project</loc>
+      <loc>http://gopherdata.io/project</loc>
       <lastmod>2016-04-27T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -155,7 +155,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/publication_types</loc>
+      <loc>http://gopherdata.io/publication_types</loc>
       <priority>0</priority>
     </url>
     
@@ -163,7 +163,7 @@
     
     
     <url>
-      <loc>https://gopherdata.io/tags</loc>
+      <loc>http://gopherdata.io/tags</loc>
       <priority>0</priority>
     </url>
     

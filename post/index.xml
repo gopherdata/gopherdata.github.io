@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on GopherData</title>
-    <link>https://gopherdata.io/post/index.xml</link>
+    <link>http://gopherdata.io/post/index.xml</link>
     <description>Recent content in Posts on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>Welcome to GopherData</title>
-      <link>https://gopherdata.io/post/introduction_to_gopherdata</link>
+      <link>http://gopherdata.io/post/introduction_to_gopherdata</link>
       <pubDate>Sat, 11 Mar 2017 12:00:00 +0000</pubDate>
       
-      <guid>https://gopherdata.io/post/introduction_to_gopherdata</guid>
+      <guid>http://gopherdata.io/post/introduction_to_gopherdata</guid>
       <description>&lt;p&gt;(Author: Daniel Whitenack, @dwhitena on &lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
 
 &lt;p&gt;Welcome to GopherData!  This site/organization intends to be a place for all Gophers (i.e., go programmers) doing data analysis, science, numerical computing, or anything else data/math related.  It&amp;rsquo;s also a place where non-Gophers can learn about doing these things in Go. The site to will serve as a hub of info about related events and an eventual GopherData conference.&lt;/p&gt;
