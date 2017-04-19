@@ -21,6 +21,406 @@
     </item>
     
     <item>
+      <title>Deep Learning from Scratch in Go - Part 1: Equations Are Graphs</title>
+      <link>http://gopherdata.io/post/deeplearning_in_go_part_1</link>
+      <pubDate>Wed, 19 Apr 2017 08:43:45 +1000</pubDate>
+      
+      <guid>http://gopherdata.io/post/deeplearning_in_go_part_1</guid>
+      <description>
+
+&lt;p&gt;(Author: Chewxy, @chewxy on &lt;a href=&#34;https://twitter.com/chewxy&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
+
+&lt;p&gt;Welcome to the first part of many about writing deep learning algorithms in Go. The goal of this series is to go from having no knowledge at all to implementing some of the latest developments in this area.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Deep_learning&#34; target=&#34;_blank&#34;&gt;Deep learning&lt;/a&gt; is not new. In fact the idea of deep learning was spawned in the early 1980s. What&amp;rsquo;s changed since then is our computers - they have gotten much much more powerful.  In this blog post we&amp;rsquo;ll start with something familiar, and edge towards building a conceptual model of deep learning. We won&amp;rsquo;t define deep learning for the first few posts, so don&amp;rsquo;t worry so much about the term.&lt;/p&gt;
+
+&lt;p&gt;There are a few terms of clarification to be made before we begin proper. In this series, the word &amp;ldquo;graph&amp;rdquo; refers to the concept of graph as used in &lt;a href=&#34;https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)&#34; target=&#34;_blank&#34;&gt;graph theory&lt;/a&gt;. For the other kind of &amp;ldquo;graph&amp;rdquo; which is usually used for data visualization, I&amp;rsquo;ll use the term &amp;ldquo;chart&amp;rdquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;computation&#34;&gt;Computation&lt;/h2&gt;
+
+&lt;p&gt;I&amp;rsquo;m going to start by making a claim: all programs can be represented as graphs. This claim is not new, of course. Nor is it bold or revolutionary. It&amp;rsquo;s the fundamental theory that computer scientists have been working on ever since the birth of the field of computation. But you may have missed it. If you have missed it, the logic goes as such:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;All modern computer programs run on what essentially is a &lt;a href=&#34;https://en.wikipedia.org/wiki/Turing_machine&#34; target=&#34;_blank&#34;&gt;Turing Machine&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;All Turing machines are equivalent to untyped lambda calculus (this is commonly known as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Church_Turing_thesis&#34; target=&#34;_blank&#34;&gt;Church-Turing thesis&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Lambda calculus can be represented as graphs.&lt;/li&gt;
+&lt;li&gt;Therefore all programs can be represented as graphs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To make this idea more concrete, let&amp;rsquo;s look at a simple program:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func main() {
+	fmt.Printf(&amp;quot;%v&amp;quot;, 1+1)	
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This generates an &lt;a href=&#34;https://en.wikipedia.org/wiki/Abstract_syntax_tree&#34; target=&#34;_blank&#34;&gt;abstract syntax tree&lt;/a&gt; like so (the AST was generated with a library built on top of &lt;a href=&#34;https://github.com/yuroyoro/goast-viewer&#34; target=&#34;_blank&#34;&gt;goast-viewer&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div style=&#34;margin-left:auto; margin-right:auto;&#34;&gt;
+&lt;svg style=&#34;width:100%; height:auto;&#34;
+ viewBox=&#34;0.00 0.00 1167.98 548.00&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; xmlns:xlink=&#34;http://www.w3.org/1999/xlink&#34;&gt;
+&lt;g id=&#34;graph0&#34; class=&#34;graph&#34; transform=&#34;scale(1 1) rotate(0) translate(4 544)&#34;&gt;
+&lt;title&gt;%3&lt;/title&gt;
+&lt;polygon fill=&#34;white&#34; stroke=&#34;none&#34; points=&#34;-4,4 -4,-544 1163.98,-544 1163.98,4 -4,4&#34;/&gt;
+&lt;!-- mainFn --&gt;
+&lt;g id=&#34;node1&#34; class=&#34;node&#34;&gt;&lt;title&gt;mainFn&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;445.942&#34; cy=&#34;-522&#34; rx=&#34;52.7911&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;445.942&#34; y=&#34;-518.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;func main()&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- mainBody --&gt;
+&lt;g id=&#34;node2&#34; class=&#34;node&#34;&gt;&lt;title&gt;mainBody&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;445.942&#34; cy=&#34;-450&#34; rx=&#34;61.1893&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;445.942&#34; y=&#34;-446.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BlocStmt&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- mainFn&amp;#45;&amp;gt;mainBody --&gt;
+&lt;g id=&#34;edge1&#34; class=&#34;edge&#34;&gt;&lt;title&gt;mainFn&amp;#45;&amp;gt;mainBody&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M445.942,-503.697C445.942,-495.983 445.942,-486.712 445.942,-478.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;449.442,-478.104 445.942,-468.104 442.442,-478.104 449.442,-478.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- bodyList --&gt;
+&lt;g id=&#34;node3&#34; class=&#34;node&#34;&gt;&lt;title&gt;bodyList&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;445.942&#34; cy=&#34;-378&#34; rx=&#34;46.2923&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;445.942&#34; y=&#34;-374.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;[]ast.Stmt&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- mainBody&amp;#45;&amp;gt;bodyList --&gt;
+&lt;g id=&#34;edge2&#34; class=&#34;edge&#34;&gt;&lt;title&gt;mainBody&amp;#45;&amp;gt;bodyList&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M445.942,-431.697C445.942,-423.983 445.942,-414.712 445.942,-406.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;449.442,-406.104 445.942,-396.104 442.442,-406.104 449.442,-406.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- list0 --&gt;
+&lt;g id=&#34;node4&#34; class=&#34;node&#34;&gt;&lt;title&gt;list0&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;445.942&#34; cy=&#34;-306&#34; rx=&#34;61.99&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;445.942&#34; y=&#34;-302.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.ExprStmt&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- bodyList&amp;#45;&amp;gt;list0 --&gt;
+&lt;g id=&#34;edge3&#34; class=&#34;edge&#34;&gt;&lt;title&gt;bodyList&amp;#45;&amp;gt;list0&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M445.942,-359.697C445.942,-351.983 445.942,-342.712 445.942,-334.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;449.442,-334.104 445.942,-324.104 442.442,-334.104 449.442,-334.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- call --&gt;
+&lt;g id=&#34;node5&#34; class=&#34;node&#34;&gt;&lt;title&gt;call&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;445.942&#34; cy=&#34;-234&#34; rx=&#34;59.2899&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;445.942&#34; y=&#34;-230.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.CallExpr&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- list0&amp;#45;&amp;gt;call --&gt;
+&lt;g id=&#34;edge4&#34; class=&#34;edge&#34;&gt;&lt;title&gt;list0&amp;#45;&amp;gt;call&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M445.942,-287.697C445.942,-279.983 445.942,-270.712 445.942,-262.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;449.442,-262.104 445.942,-252.104 442.442,-262.104 449.442,-262.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- fn --&gt;
+&lt;g id=&#34;node6&#34; class=&#34;node&#34;&gt;&lt;title&gt;fn&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;303.942&#34; cy=&#34;-162&#34; rx=&#34;73.387&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;303.942&#34; y=&#34;-158.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.SelectorExpr&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- call&amp;#45;&amp;gt;fn --&gt;
+&lt;g id=&#34;edge5&#34; class=&#34;edge&#34;&gt;&lt;title&gt;call&amp;#45;&amp;gt;fn&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M416.174,-218.326C395.302,-208.037 367.156,-194.162 344.272,-182.881&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;345.662,-179.664 335.145,-178.382 342.567,-185.943 345.662,-179.664&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- args --&gt;
+&lt;g id=&#34;node9&#34; class=&#34;node&#34;&gt;&lt;title&gt;args&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;587.942&#34; cy=&#34;-162&#34; rx=&#34;46.2923&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;587.942&#34; y=&#34;-158.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;[]ast.Expr&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- call&amp;#45;&amp;gt;args --&gt;
+&lt;g id=&#34;edge8&#34; class=&#34;edge&#34;&gt;&lt;title&gt;call&amp;#45;&amp;gt;args&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M475.71,-218.326C497.582,-207.544 527.443,-192.823 550.866,-181.277&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;552.721,-184.265 560.142,-176.704 549.625,-177.986 552.721,-184.265&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- fnPkg --&gt;
+&lt;g id=&#34;node7&#34; class=&#34;node&#34;&gt;&lt;title&gt;fnPkg&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;92.9418&#34; cy=&#34;-90&#34; rx=&#34;92.8835&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;92.9418&#34; y=&#34;-86.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.Ident (Name: fmt)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- fn&amp;#45;&amp;gt;fnPkg --&gt;
+&lt;g id=&#34;edge6&#34; class=&#34;edge&#34;&gt;&lt;title&gt;fn&amp;#45;&amp;gt;fnPkg&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M262.255,-147.17C229.431,-136.281 183.405,-121.012 147.625,-109.141&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;148.418,-105.717 137.825,-105.89 146.214,-112.361 148.418,-105.717&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- fnFn --&gt;
+&lt;g id=&#34;node8&#34; class=&#34;node&#34;&gt;&lt;title&gt;fnFn&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;303.942&#34; cy=&#34;-90&#34; rx=&#34;100.182&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;303.942&#34; y=&#34;-86.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.Ident (Name: Printf)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- fn&amp;#45;&amp;gt;fnFn --&gt;
+&lt;g id=&#34;edge7&#34; class=&#34;edge&#34;&gt;&lt;title&gt;fn&amp;#45;&amp;gt;fnFn&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M303.942,-143.697C303.942,-135.983 303.942,-126.712 303.942,-118.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;307.442,-118.104 303.942,-108.104 300.442,-118.104 307.442,-118.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- args0 --&gt;
+&lt;g id=&#34;node10&#34; class=&#34;node&#34;&gt;&lt;title&gt;args0&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;587.942&#34; cy=&#34;-90&#34; rx=&#34;165.971&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;587.942&#34; y=&#34;-86.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BasicLit (Kind: STRING) (Value: %v)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args&amp;#45;&amp;gt;args0 --&gt;
+&lt;g id=&#34;edge9&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args&amp;#45;&amp;gt;args0&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M587.942,-143.697C587.942,-135.983 587.942,-126.712 587.942,-118.112&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;591.442,-118.104 587.942,-108.104 584.442,-118.104 591.442,-118.104&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- args1 --&gt;
+&lt;g id=&#34;node11&#34; class=&#34;node&#34;&gt;&lt;title&gt;args1&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;868.942&#34; cy=&#34;-90&#34; rx=&#34;97.4827&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;868.942&#34; y=&#34;-86.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BinaryExpr (Op: +)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args&amp;#45;&amp;gt;args1 --&gt;
+&lt;g id=&#34;edge10&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args&amp;#45;&amp;gt;args1&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M625.839,-151.559C671.25,-140.247 748.104,-121.102 803.251,-107.364&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;804.426,-110.679 813.284,-104.865 802.734,-103.886 804.426,-110.679&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- lhs --&gt;
+&lt;g id=&#34;node12&#34; class=&#34;node&#34;&gt;&lt;title&gt;lhs&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;718.942&#34; cy=&#34;-18&#34; rx=&#34;141.075&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;718.942&#34; y=&#34;-14.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BasicLit (Kind: INT) (Value: 1)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args1&amp;#45;&amp;gt;lhs --&gt;
+&lt;g id=&#34;edge11&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args1&amp;#45;&amp;gt;lhs&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M834.904,-73.1159C813.785,-63.26 786.413,-50.4867 763.567,-39.825&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;764.951,-36.6089 754.409,-35.5516 761.991,-42.9522 764.951,-36.6089&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- rhs --&gt;
+&lt;g id=&#34;node13&#34; class=&#34;node&#34;&gt;&lt;title&gt;rhs&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;1018.94&#34; cy=&#34;-18&#34; rx=&#34;141.075&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;1018.94&#34; y=&#34;-14.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BasicLit (Kind: INT) (Value: 1)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args1&amp;#45;&amp;gt;rhs --&gt;
+&lt;g id=&#34;edge12&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args1&amp;#45;&amp;gt;rhs&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M902.979,-73.1159C924.099,-63.26 951.47,-50.4867 974.317,-39.825&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;975.892,-42.9522 983.474,-35.5516 972.932,-36.6089 975.892,-42.9522&#34;/&gt;
+&lt;/g&gt;
+&lt;/g&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By this, we can also say that any equation that can be represented as a computer program, and a computer program can be represented as a graph. In particular, let&amp;rsquo;s zoom in &lt;code&gt;1+1&lt;/code&gt; part:&lt;/p&gt;
+
+&lt;p&gt;This corresponds to this part of the cleaned up graph (with unnecessary nodes removed):&lt;/p&gt;
+
+&lt;div style=&#34;margin-left:auto; margin-right:auto;&#34;&gt;
+&lt;svg style=&#34;width:100%; height:auto;&#34;
+ viewBox=&#34;0.00 0.00 590.07 116.00&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; xmlns:xlink=&#34;http://www.w3.org/1999/xlink&#34;&gt;
+&lt;g id=&#34;graph0&#34; class=&#34;graph&#34; transform=&#34;scale(1 1) rotate(0) translate(4 112)&#34;&gt;
+&lt;title&gt;%3&lt;/title&gt;
+&lt;polygon fill=&#34;white&#34; stroke=&#34;none&#34; points=&#34;-4,4 -4,-112 586.075,-112 586.075,4 -4,4&#34;/&gt;
+&lt;!-- args1 --&gt;
+&lt;g id=&#34;node1&#34; class=&#34;node&#34;&gt;&lt;title&gt;args1&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;291.037&#34; cy=&#34;-90&#34; rx=&#34;97.4827&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;291.037&#34; y=&#34;-86.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BinaryExpr (Op: +)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- lhs --&gt;
+&lt;g id=&#34;node2&#34; class=&#34;node&#34;&gt;&lt;title&gt;lhs&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;141.037&#34; cy=&#34;-18&#34; rx=&#34;141.075&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;141.037&#34; y=&#34;-14.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BasicLit (Kind: INT) (Value: 1)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args1&amp;#45;&amp;gt;lhs --&gt;
+&lt;g id=&#34;edge1&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args1&amp;#45;&amp;gt;lhs&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M257,-73.1159C235.88,-63.26 208.509,-50.4867 185.663,-39.825&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;187.047,-36.6089 176.505,-35.5516 184.087,-42.9522 187.047,-36.6089&#34;/&gt;
+&lt;/g&gt;
+&lt;!-- rhs --&gt;
+&lt;g id=&#34;node3&#34; class=&#34;node&#34;&gt;&lt;title&gt;rhs&lt;/title&gt;
+&lt;ellipse fill=&#34;none&#34; stroke=&#34;black&#34; cx=&#34;441.037&#34; cy=&#34;-18&#34; rx=&#34;141.075&#34; ry=&#34;18&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;441.037&#34; y=&#34;-14.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;*ast.BasicLit (Kind: INT) (Value: 1)&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- args1&amp;#45;&amp;gt;rhs --&gt;
+&lt;g id=&#34;edge2&#34; class=&#34;edge&#34;&gt;&lt;title&gt;args1&amp;#45;&amp;gt;rhs&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M325.075,-73.1159C346.195,-63.26 373.566,-50.4867 396.412,-39.825&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;397.988,-42.9522 405.57,-35.5516 395.028,-36.6089 397.988,-42.9522&#34;/&gt;
+&lt;/g&gt;
+&lt;/g&gt;
+&lt;/svg&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;The graph is traversed in a depth-first manner, starting from the top. The values of the program flow from bottom to top. When the program runs, it starts right at the top. The node will not be resolved until the dependent nodes have been evaluated. The arrows point to what each node depends on. So for example, the value of the &lt;code&gt;*ast.BinaryExpr&lt;/code&gt; node is dependent on the values of &lt;code&gt;*ast.BasicLit (Kind: INT)&lt;/code&gt;. Since we know both values are &lt;code&gt;1&lt;/code&gt;, and we know what &lt;code&gt;+&lt;/code&gt; does, we know that the value at the node &lt;code&gt;*ast.BinaryExpr&lt;/code&gt; is &lt;code&gt;2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;equations-as-graphs&#34;&gt;Equations As Graphs&lt;/h2&gt;
+
+&lt;p&gt;Now why did we spend all that time show 1+1 in graph form? Well, it&amp;rsquo;s because deep learning is really in its core, just a bunch of mathematical equations. Wait, don&amp;rsquo;t go yet! It&amp;rsquo;s not that scary. I am personally of the opinion that one can&amp;rsquo;t really do deep learning (or any machine learning, really) without understanding the mathematics behind it. And in my experience there hasn&amp;rsquo;t been a better way to learn it than visually, if only to internalize the concepts.&lt;/p&gt;
+
+&lt;p&gt;Most deep learning libraries like &lt;a href=&#34;https://tensorflow.org&#34; target=&#34;_blank&#34;&gt;Tensorflow&lt;/a&gt;, &lt;a href=&#34;https://deeplearning.org/theano&#34; target=&#34;_blank&#34;&gt;Theano&lt;/a&gt;, or even my own for Go - &lt;a href=&#34;https://github.com/chewxy/gorgonia&#34; target=&#34;_blank&#34;&gt;Gorgonia&lt;/a&gt;, rely on this core concept that equations are representable by graphs. More importantly, these libraries expose the equation graphs as objects that can be manipulated by the programmer.&lt;/p&gt;
+
+&lt;p&gt;So instead of the program above, we&amp;rsquo;d create something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func main() {
+	// Create a graph.
+	g := G.NewGraph()                         
+	
+	// Create a node called &amp;quot;x&amp;quot; with the value 1.
+	x := G.NodeFromAny(g, 1, G.WithName(&amp;quot;x&amp;quot;)) 
+	
+	// Create a node called &amp;quot;y&amp;quot; with the value 1.
+	y := G.NodeFromAny(g, 1, G.WithName(&amp;quot;y&amp;quot;)) 
+	
+	// z := x + y
+	z := G.Must(G.Add(x, y))                  
+
+	// Create a VM to execute the graph.
+	vm := G.NewTapeMachine(g) 
+
+	// Run the VM. Errors are not checked.
+	vm.RunAll()               
+
+	// Print the value of z.
+	fmt.Printf(&amp;quot;%v&amp;quot;, z.Value()) 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The equation graph looks like this:&lt;/p&gt;
+
+&lt;div style=&#34;margin-left:auto; margin-right:auto;&#34;&gt;
+&lt;svg style=&#34;width:100%; height:auto;&#34;
+ viewBox=&#34;0.00 0.00 715.00 360.00&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; xmlns:xlink=&#34;http://www.w3.org/1999/xlink&#34;&gt;
+&lt;g id=&#34;graph0&#34; class=&#34;graph&#34; transform=&#34;scale(1 1) rotate(0) translate(4 356)&#34;&gt;
+&lt;title&gt;fullGraph&lt;/title&gt;
+&lt;polygon fill=&#34;white&#34; stroke=&#34;none&#34; points=&#34;-4,4 -4,-356 1109.3,-356 1109.3,4 -4,4&#34;/&gt;
+&lt;g id=&#34;clust1&#34; class=&#34;cluster&#34;&gt;&lt;title&gt;cluster_expressionGraph&lt;/title&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;black&#34; points=&#34;8,-192 8,-344 574,-344 574,-192 8,-192&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;291&#34; y=&#34;-328.8&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt;expressionGraph&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- Node_0xc420146300 --&gt;
+&lt;g id=&#34;node1&#34; class=&#34;node&#34;&gt;&lt;title&gt;Node_0xc420146300&lt;/title&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;206,-287.5 206,-308.5 254,-308.5 254,-287.5 206,-287.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;225.5&#34; y=&#34;-294.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;2&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;254,-287.5 254,-308.5 558,-308.5 558,-287.5 254,-287.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;257&#34; y=&#34;-294.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;+ false(%a8d96c31, %82d6f1c8) :: int&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;206,-266.5 206,-287.5 254,-287.5 254,-266.5 206,-266.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;221.5&#34; y=&#34;-273.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;Op&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;254,-266.5 254,-287.5 558,-287.5 558,-266.5 254,-266.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;323&#34; y=&#34;-273.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;+ false :: a → a → a&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;206,-245.5 206,-266.5 558,-266.5 558,-245.5 206,-245.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;373.5&#34; y=&#34;-252.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;()&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;206,-224.5 206,-245.5 558,-245.5 558,-224.5 206,-224.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;373.5&#34; y=&#34;-231.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;&amp;#45;1&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;206,-203.5 206,-224.5 254,-224.5 254,-203.5 206,-203.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;209&#34; y=&#34;-210.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;Value&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#ff0000&#34; points=&#34;254,-203.5 254,-224.5 558,-224.5 558,-203.5 254,-203.5&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;377&#34; y=&#34;-210.3&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;2 :: int&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- Node_0xc420146000 --&gt;
+&lt;g id=&#34;node2&#34; class=&#34;node&#34;&gt;&lt;title&gt;Node_0xc420146000&lt;/title&gt;
+&lt;polygon fill=&#34;lightyellow&#34; stroke=&#34;none&#34; points=&#34;217.5,-4 217.5,-88 338.5,-88 338.5,-4 217.5,-4&#34;/&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;218,-67 218,-88 266,-88 266,-67 218,-67&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;237.5&#34; y=&#34;-73.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;0&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;266,-67 266,-88 339,-88 339,-67 266,-67&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;269&#34; y=&#34;-73.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;x :: int&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;218,-46 218,-67 339,-67 339,-46 218,-46&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;270&#34; y=&#34;-52.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;()&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;218,-25 218,-46 339,-46 339,-25 218,-25&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;270&#34; y=&#34;-31.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;&amp;#45;1&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;218,-4 218,-25 266,-25 266,-4 218,-4&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;221&#34; y=&#34;-10.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;Value&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;266,-4 266,-25 339,-25 339,-4 266,-4&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;273.5&#34; y=&#34;-10.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;1 :: int&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- Node_0xc420146300&amp;#45;&amp;gt;Node_0xc420146000 --&gt;
+&lt;g id=&#34;edge1&#34; class=&#34;edge&#34;&gt;&lt;title&gt;Node_0xc420146300⚓️s&amp;#45;&amp;gt;Node_0xc420146000⚓️n&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M382,-202.5C382,-137.689 288.68,-155.213 278.837,-99.0855&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;282.315,-98.6762 278,-89 275.339,-99.2553 282.315,-98.6762&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;385.75&#34; y=&#34;-191.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt; 0 &lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- Node_0xc420146240 --&gt;
+&lt;g id=&#34;node3&#34; class=&#34;node&#34;&gt;&lt;title&gt;Node_0xc420146240&lt;/title&gt;
+&lt;polygon fill=&#34;lightyellow&#34; stroke=&#34;none&#34; points=&#34;426.5,-4 426.5,-88 547.5,-88 547.5,-4 426.5,-4&#34;/&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;427,-67 427,-88 475,-88 475,-67 427,-67&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;446.5&#34; y=&#34;-73.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;1&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;475,-67 475,-88 548,-88 548,-67 475,-67&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;478&#34; y=&#34;-73.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;y :: int&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;427,-46 427,-67 548,-67 548,-46 427,-46&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;479&#34; y=&#34;-52.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;()&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;427,-25 427,-46 548,-46 548,-25 427,-25&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;479&#34; y=&#34;-31.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;&amp;#45;1&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;427,-4 427,-25 475,-25 475,-4 427,-4&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;430&#34; y=&#34;-10.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;Value&lt;/text&gt;
+&lt;polygon fill=&#34;none&#34; stroke=&#34;#00ff00&#34; points=&#34;475,-4 475,-25 548,-25 548,-4 475,-4&#34;/&gt;
+&lt;text text-anchor=&#34;start&#34; x=&#34;482.5&#34; y=&#34;-10.8&#34; font-family=&#34;monospace&#34; font-size=&#34;14.00&#34;&gt;1 :: int&lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- Node_0xc420146300&amp;#45;&amp;gt;Node_0xc420146240 --&gt;
+&lt;g id=&#34;edge2&#34; class=&#34;edge&#34;&gt;&lt;title&gt;Node_0xc420146300⚓️s&amp;#45;&amp;gt;Node_0xc420146240⚓️n&lt;/title&gt;
+&lt;path fill=&#34;none&#34; stroke=&#34;black&#34; d=&#34;M382,-202.5C382,-137.404 476.218,-155.453 486.155,-99.1258&#34;/&gt;
+&lt;polygon fill=&#34;black&#34; stroke=&#34;black&#34; points=&#34;489.656,-99.2565 487,-89 482.68,-98.6742 489.656,-99.2565&#34;/&gt;
+&lt;text text-anchor=&#34;middle&#34; x=&#34;374.5&#34; y=&#34;-191.3&#34; font-family=&#34;Times,serif&#34; font-size=&#34;14.00&#34;&gt; 1 &lt;/text&gt;
+&lt;/g&gt;
+&lt;!-- outsideRoot --&gt;
+&lt;!-- insideInputs --&gt;
+&lt;!-- outsideRoot&amp;#45;&amp;gt;insideInputs --&gt;
+&lt;!-- outsideExprG --&gt;
+&lt;!-- outsideRoot&amp;#45;&amp;gt;outsideExprG --&gt;
+&lt;!-- insideExprG --&gt;
+&lt;!-- insideInputs&amp;#45;&amp;gt;insideExprG --&gt;
+&lt;!-- outsideExprG&amp;#45;&amp;gt;insideExprG --&gt;
+&lt;/g&gt;
+&lt;/svg&gt;
+
+
+&lt;/div&gt;
+
+&lt;h2 id=&#34;why-graph-objects&#34;&gt;Why Graph Objects?&lt;/h2&gt;
+
+&lt;p&gt;So far you might be thinking - if all computer programs are graphs, and all mathematical equations are graphs, we could just program the mathematical equations in, right? Why write the above example with object graphs when a simple &lt;code&gt;fmt.Printf(&amp;quot;%v&amp;quot;, 1+1)&lt;/code&gt; would do? Afterall, the graphs are mostly the same. Having a graph object at this point seem like a silly amount of overhead.&lt;/p&gt;
+
+&lt;p&gt;You would be right. For simple equations, having a programmer manipulatable graph object is really overkill (unless you live in Java land, where it&amp;rsquo;s classes all the way down).&lt;/p&gt;
+
+&lt;p&gt;I would however, posit at least three advantages of having a graph object. All of these have got to do with reducing human errors.&lt;/p&gt;
+
+&lt;h3 id=&#34;numerical-stability&#34;&gt;Numerical Stability&lt;/h3&gt;
+
+&lt;p&gt;Consider the equation $y = log(1 + x)$. This equation is not &lt;a href=&#34;https://en.wikipedia.org/wiki/Numerical_stability&#34; target=&#34;_blank&#34;&gt;numerically stable&lt;/a&gt; - for very small values of &lt;code&gt;x&lt;/code&gt;, the answer will most likely be wrong. This is because of the way &lt;code&gt;float64&lt;/code&gt; is designed - a &lt;code&gt;float64&lt;/code&gt; does not have enough bits to be able to tell apart &lt;code&gt;1&lt;/code&gt; and &lt;code&gt;1 + 10e-16&lt;/code&gt;. In fact, the correct way to do $latex y = log(1 + x)$ is to use the built in library function &lt;code&gt;math.Log1p&lt;/code&gt;. It can be shown in this simple program:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func main() {
+	fmt.Printf(&amp;quot;%v\n&amp;quot;, math.Log(1.0+10e-16))
+	fmt.Printf(&amp;quot;%v\n&amp;quot;, math.Log1p(10e-16))
+}
+
+1.110223024625156e-15 // wrong
+9.999999999999995e-16 // correct
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, of course the programmer may be well aware of this issue and opt to use &lt;code&gt;math.Log1p&lt;/code&gt; when implementing neural network algorithms, but I&amp;rsquo;m sure you&amp;rsquo;d agree that having a library that automatically converts &lt;code&gt;log(1+x)&lt;/code&gt; to use &lt;code&gt;math.Log1p(x)&lt;/code&gt; be rather awesome? It reduces the element of human error.&lt;/p&gt;
+
+&lt;h3 id=&#34;machine-learning-specific-optimizations&#34;&gt;Machine-Learning Specific Optimizations&lt;/h3&gt;
+
+&lt;p&gt;Consider a variant of the first program in this post:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func a() int {
+	return 1 + 1
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is the same program compiled down to assembly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;&amp;quot;.a t=1 size=10 args=0x8 locals=0x0
+	(main.go:5)	TEXT	&amp;quot;&amp;quot;.a(SB), $0-8
+	(main.go:5)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	(main.go:5)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	(main.go:6)	MOVQ	$2, &amp;quot;&amp;quot;.~r0+8(FP)
+	(main.go:6)	RET
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In particular, pay attention to the second last line: &lt;code&gt;MOVQ $2, &amp;quot;&amp;quot;.~r0+8(FP)&lt;/code&gt;. The function has been optimized in such a way that &lt;code&gt;2&lt;/code&gt; is returned. No addition operation will be performed at run time. This is because the compiler knows, &lt;em&gt;at compile time&lt;/em&gt;, that 1 + 1 = 2. By replacing the expression with a constant, the compiler is saving on computation cycles at run time. If you&amp;rsquo;re interested in building compilers, this is known as &lt;a href=&#34;https://en.wikipedia.org/wiki/Constant_folding&#34; target=&#34;_blank&#34;&gt;constant folding&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So, we&amp;rsquo;ve established that compilers are smart enough to do optimizations. But the Go compiler (and in fact most non-machine-learning specific compilers) isn&amp;rsquo;t smart enough to handle values that are used for machine learning. For machine learning, we frequently use array-based values, like a slice of &lt;code&gt;float64&lt;/code&gt;s, or a matrix of &lt;code&gt;float32&lt;/code&gt;s.&lt;/p&gt;
+
+&lt;p&gt;Imagine if you will, if you&amp;rsquo;re not doing &lt;code&gt;1 + 1&lt;/code&gt;. Instead you&amp;rsquo;re doing &lt;code&gt;[]int{1, 1, 1} + []int{1,1,1}&lt;/code&gt;. The compiler wouldn&amp;rsquo;t be able to optimize this and just replace it with &lt;code&gt;[]int{2, 2, 2}&lt;/code&gt;. But building a graph object that can be optimized allows users to do just that. Gorgonia currently doesn&amp;rsquo;t do constant folding yet (earlier versions had constant folding but it is quite difficult to get right), but it comes with other forms of graph optimizations like &lt;a href=&#34;https://en.wikipedia.org/wiki/Common_subexpression_elimination&#34; target=&#34;_blank&#34;&gt;common expression elimination&lt;/a&gt;, some amount of variable elimination and some minimal form of tree shaking. Other more mature libraries like TensorFlow or Theano comes with very many optimization algorithms for their graphs.&lt;/p&gt;
+
+&lt;p&gt;Again, one could argue that this could be done by hand, and coding it into the program would be more than doable. But is this really where you&amp;rsquo;d rather spend your time and effort? Or would you rather be creating the coolest new deep learning stuff?&lt;/p&gt;
+
+&lt;h3 id=&#34;backpropagation&#34;&gt;Backpropagation&lt;/h3&gt;
+
+&lt;p&gt;Lastly, and most importantly, the graph object is most important in the implementation of backpropagation. In the following posts, I will talk about backpropagation and how it relates to computing partial derivatives. It&amp;rsquo;s there we shall see the true power of having graph objects that are manipulatable by the programmer.&lt;/p&gt;
+
+&lt;p&gt;In a far future post, I shall also touch on the capacity to generate better code, using the graph object.&lt;/p&gt;
+
+&lt;h2 id=&#34;why-go&#34;&gt;Why Go?&lt;/h2&gt;
+
+&lt;p&gt;If you&amp;rsquo;re working on a truly homoiconic language such as lisp or Julia, you probably wouldn&amp;rsquo;t need a graph object. If you could have access to the program&amp;rsquo;s internal data structures and they&amp;rsquo;re modifiable on the fly at run time, you would be able to augment plenty of the operations on the fly (yes, you can do the same for Go, but why would you?). This would make backpropagation algorithms a lot simpler to perform at runtime. Unfortunately this isn&amp;rsquo;t the case. Which is why we&amp;rsquo;d have to build up extra data structures for deep learning.&lt;/p&gt;
+
+&lt;p&gt;Do note that this isn&amp;rsquo;t a knock on Go or Python or Lua. All of these languages have their strengths and weaknesses. But why do deep learning related work in Go when there are more mature libraries in Python or Lua? Well, one of the major reasons I developed Gorgonia was the ability to deploy everything neatly into one single binary. Doing that with Python or Lua would take an immense amount of effort. By contrast, deploying Go programs are a breeze.&lt;/p&gt;
+
+&lt;p&gt;I believe that Go for data science is an amazing idea. It is typesafe (enough for me), and it&amp;rsquo;s compiled down to binary. Go allows for better mechanical sympathy, which I believe is key to having faster and better AI out there. Afterall, we are ALL bound by our hardware. I just wish there were better higher level data structures for me to express my ideas. There weren&amp;rsquo;t, so I built them. And I hope you use them.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Welcome to GopherData</title>
       <link>http://gopherdata.io/post/introduction_to_gopherdata</link>
       <pubDate>Sat, 11 Mar 2017 12:00:00 +0000</pubDate>

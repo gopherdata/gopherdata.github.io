@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.20-DEV" />
+  <meta name="author" content="GopherData">
+  <meta name="description" content="Users and developers of Go data processing, analytics, and visualization tools.">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/highlight.min.css">
+    
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/academicons.min.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Merriweather|Roboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  <link rel="alternate" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+  <link rel="feed" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="http://gopherdata.io/post/deeplearning_in_go_part_1">
+
+  
+
+  <title>Deep Learning from Scratch in Go - Part 1: Equations Are Graphs | GopherData</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">GopherData</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#talks">
+            
+            <span>Events</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="http://github.com/gopherdata/resources">
+            
+            <span>Resources</span>
+          </a>
+        </li>
+
+        
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+  <div class="article-container">
+    <h1 itemprop="name">Deep Learning from Scratch in Go - Part 1: Equations Are Graphs</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-04-19 08:43:45 &#43;1000 &#43;1000" itemprop="datePublished">
+      Wed, Apr 19, 2017
+    </time>
+  </span>
+
+  
+
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fdeeplearning_in_go_part_1"
+         target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Deep%20Learning%20from%20Scratch%20in%20Go%20-%20Part%201%3a%20Equations%20Are%20Graphs&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdeeplearning_in_go_part_1"
+         target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdeeplearning_in_go_part_1&amp;title=Deep%20Learning%20from%20Scratch%20in%20Go%20-%20Part%201%3a%20Equations%20Are%20Graphs"
+         target="_blank">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fdeeplearning_in_go_part_1&amp;title=Deep%20Learning%20from%20Scratch%20in%20Go%20-%20Part%201%3a%20Equations%20Are%20Graphs"
+         target="_blank">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Deep%20Learning%20from%20Scratch%20in%20Go%20-%20Part%201%3a%20Equations%20Are%20Graphs&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fdeeplearning_in_go_part_1">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p>(Author: Chewxy, @chewxy on <a href="https://twitter.com/chewxy" target="_blank">Twitter</a> and Gophers Slack)</p>
+
+<p>Welcome to the first part of many about writing deep learning algorithms in Go. The goal of this series is to go from having no knowledge at all to implementing some of the latest developments in this area.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Deep_learning" target="_blank">Deep learning</a> is not new. In fact the idea of deep learning was spawned in the early 1980s. What&rsquo;s changed since then is our computers - they have gotten much much more powerful.  In this blog post we&rsquo;ll start with something familiar, and edge towards building a conceptual model of deep learning. We won&rsquo;t define deep learning for the first few posts, so don&rsquo;t worry so much about the term.</p>
+
+<p>There are a few terms of clarification to be made before we begin proper. In this series, the word &ldquo;graph&rdquo; refers to the concept of graph as used in <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)" target="_blank">graph theory</a>. For the other kind of &ldquo;graph&rdquo; which is usually used for data visualization, I&rsquo;ll use the term &ldquo;chart&rdquo;.</p>
+
+<h2 id="computation">Computation</h2>
+
+<p>I&rsquo;m going to start by making a claim: all programs can be represented as graphs. This claim is not new, of course. Nor is it bold or revolutionary. It&rsquo;s the fundamental theory that computer scientists have been working on ever since the birth of the field of computation. But you may have missed it. If you have missed it, the logic goes as such:</p>
+
+<ol>
+<li>All modern computer programs run on what essentially is a <a href="https://en.wikipedia.org/wiki/Turing_machine" target="_blank">Turing Machine</a>.</li>
+<li>All Turing machines are equivalent to untyped lambda calculus (this is commonly known as the <a href="https://en.wikipedia.org/wiki/Church_Turing_thesis" target="_blank">Church-Turing thesis</a>)</li>
+<li>Lambda calculus can be represented as graphs.</li>
+<li>Therefore all programs can be represented as graphs.</li>
+</ol>
+
+<p>To make this idea more concrete, let&rsquo;s look at a simple program:</p>
+
+<pre><code class="language-go">func main() {
+	fmt.Printf(&quot;%v&quot;, 1+1)	
+}
+</code></pre>
+
+<p>This generates an <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree" target="_blank">abstract syntax tree</a> like so (the AST was generated with a library built on top of <a href="https://github.com/yuroyoro/goast-viewer" target="_blank">goast-viewer</a>):</p>
+
+<div style="margin-left:auto; margin-right:auto;">
+<svg style="width:100%; height:auto;"
+ viewBox="0.00 0.00 1167.98 548.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 544)">
+<title>%3</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-544 1163.98,-544 1163.98,4 -4,4"/>
+<!-- mainFn -->
+<g id="node1" class="node"><title>mainFn</title>
+<ellipse fill="none" stroke="black" cx="445.942" cy="-522" rx="52.7911" ry="18"/>
+<text text-anchor="middle" x="445.942" y="-518.3" font-family="Times,serif" font-size="14.00">func main()</text>
+</g>
+<!-- mainBody -->
+<g id="node2" class="node"><title>mainBody</title>
+<ellipse fill="none" stroke="black" cx="445.942" cy="-450" rx="61.1893" ry="18"/>
+<text text-anchor="middle" x="445.942" y="-446.3" font-family="Times,serif" font-size="14.00">*ast.BlocStmt</text>
+</g>
+<!-- mainFn&#45;&gt;mainBody -->
+<g id="edge1" class="edge"><title>mainFn&#45;&gt;mainBody</title>
+<path fill="none" stroke="black" d="M445.942,-503.697C445.942,-495.983 445.942,-486.712 445.942,-478.112"/>
+<polygon fill="black" stroke="black" points="449.442,-478.104 445.942,-468.104 442.442,-478.104 449.442,-478.104"/>
+</g>
+<!-- bodyList -->
+<g id="node3" class="node"><title>bodyList</title>
+<ellipse fill="none" stroke="black" cx="445.942" cy="-378" rx="46.2923" ry="18"/>
+<text text-anchor="middle" x="445.942" y="-374.3" font-family="Times,serif" font-size="14.00">[]ast.Stmt</text>
+</g>
+<!-- mainBody&#45;&gt;bodyList -->
+<g id="edge2" class="edge"><title>mainBody&#45;&gt;bodyList</title>
+<path fill="none" stroke="black" d="M445.942,-431.697C445.942,-423.983 445.942,-414.712 445.942,-406.112"/>
+<polygon fill="black" stroke="black" points="449.442,-406.104 445.942,-396.104 442.442,-406.104 449.442,-406.104"/>
+</g>
+<!-- list0 -->
+<g id="node4" class="node"><title>list0</title>
+<ellipse fill="none" stroke="black" cx="445.942" cy="-306" rx="61.99" ry="18"/>
+<text text-anchor="middle" x="445.942" y="-302.3" font-family="Times,serif" font-size="14.00">*ast.ExprStmt</text>
+</g>
+<!-- bodyList&#45;&gt;list0 -->
+<g id="edge3" class="edge"><title>bodyList&#45;&gt;list0</title>
+<path fill="none" stroke="black" d="M445.942,-359.697C445.942,-351.983 445.942,-342.712 445.942,-334.112"/>
+<polygon fill="black" stroke="black" points="449.442,-334.104 445.942,-324.104 442.442,-334.104 449.442,-334.104"/>
+</g>
+<!-- call -->
+<g id="node5" class="node"><title>call</title>
+<ellipse fill="none" stroke="black" cx="445.942" cy="-234" rx="59.2899" ry="18"/>
+<text text-anchor="middle" x="445.942" y="-230.3" font-family="Times,serif" font-size="14.00">*ast.CallExpr</text>
+</g>
+<!-- list0&#45;&gt;call -->
+<g id="edge4" class="edge"><title>list0&#45;&gt;call</title>
+<path fill="none" stroke="black" d="M445.942,-287.697C445.942,-279.983 445.942,-270.712 445.942,-262.112"/>
+<polygon fill="black" stroke="black" points="449.442,-262.104 445.942,-252.104 442.442,-262.104 449.442,-262.104"/>
+</g>
+<!-- fn -->
+<g id="node6" class="node"><title>fn</title>
+<ellipse fill="none" stroke="black" cx="303.942" cy="-162" rx="73.387" ry="18"/>
+<text text-anchor="middle" x="303.942" y="-158.3" font-family="Times,serif" font-size="14.00">*ast.SelectorExpr</text>
+</g>
+<!-- call&#45;&gt;fn -->
+<g id="edge5" class="edge"><title>call&#45;&gt;fn</title>
+<path fill="none" stroke="black" d="M416.174,-218.326C395.302,-208.037 367.156,-194.162 344.272,-182.881"/>
+<polygon fill="black" stroke="black" points="345.662,-179.664 335.145,-178.382 342.567,-185.943 345.662,-179.664"/>
+</g>
+<!-- args -->
+<g id="node9" class="node"><title>args</title>
+<ellipse fill="none" stroke="black" cx="587.942" cy="-162" rx="46.2923" ry="18"/>
+<text text-anchor="middle" x="587.942" y="-158.3" font-family="Times,serif" font-size="14.00">[]ast.Expr</text>
+</g>
+<!-- call&#45;&gt;args -->
+<g id="edge8" class="edge"><title>call&#45;&gt;args</title>
+<path fill="none" stroke="black" d="M475.71,-218.326C497.582,-207.544 527.443,-192.823 550.866,-181.277"/>
+<polygon fill="black" stroke="black" points="552.721,-184.265 560.142,-176.704 549.625,-177.986 552.721,-184.265"/>
+</g>
+<!-- fnPkg -->
+<g id="node7" class="node"><title>fnPkg</title>
+<ellipse fill="none" stroke="black" cx="92.9418" cy="-90" rx="92.8835" ry="18"/>
+<text text-anchor="middle" x="92.9418" y="-86.3" font-family="Times,serif" font-size="14.00">*ast.Ident (Name: fmt)</text>
+</g>
+<!-- fn&#45;&gt;fnPkg -->
+<g id="edge6" class="edge"><title>fn&#45;&gt;fnPkg</title>
+<path fill="none" stroke="black" d="M262.255,-147.17C229.431,-136.281 183.405,-121.012 147.625,-109.141"/>
+<polygon fill="black" stroke="black" points="148.418,-105.717 137.825,-105.89 146.214,-112.361 148.418,-105.717"/>
+</g>
+<!-- fnFn -->
+<g id="node8" class="node"><title>fnFn</title>
+<ellipse fill="none" stroke="black" cx="303.942" cy="-90" rx="100.182" ry="18"/>
+<text text-anchor="middle" x="303.942" y="-86.3" font-family="Times,serif" font-size="14.00">*ast.Ident (Name: Printf)</text>
+</g>
+<!-- fn&#45;&gt;fnFn -->
+<g id="edge7" class="edge"><title>fn&#45;&gt;fnFn</title>
+<path fill="none" stroke="black" d="M303.942,-143.697C303.942,-135.983 303.942,-126.712 303.942,-118.112"/>
+<polygon fill="black" stroke="black" points="307.442,-118.104 303.942,-108.104 300.442,-118.104 307.442,-118.104"/>
+</g>
+<!-- args0 -->
+<g id="node10" class="node"><title>args0</title>
+<ellipse fill="none" stroke="black" cx="587.942" cy="-90" rx="165.971" ry="18"/>
+<text text-anchor="middle" x="587.942" y="-86.3" font-family="Times,serif" font-size="14.00">*ast.BasicLit (Kind: STRING) (Value: %v)</text>
+</g>
+<!-- args&#45;&gt;args0 -->
+<g id="edge9" class="edge"><title>args&#45;&gt;args0</title>
+<path fill="none" stroke="black" d="M587.942,-143.697C587.942,-135.983 587.942,-126.712 587.942,-118.112"/>
+<polygon fill="black" stroke="black" points="591.442,-118.104 587.942,-108.104 584.442,-118.104 591.442,-118.104"/>
+</g>
+<!-- args1 -->
+<g id="node11" class="node"><title>args1</title>
+<ellipse fill="none" stroke="black" cx="868.942" cy="-90" rx="97.4827" ry="18"/>
+<text text-anchor="middle" x="868.942" y="-86.3" font-family="Times,serif" font-size="14.00">*ast.BinaryExpr (Op: +)</text>
+</g>
+<!-- args&#45;&gt;args1 -->
+<g id="edge10" class="edge"><title>args&#45;&gt;args1</title>
+<path fill="none" stroke="black" d="M625.839,-151.559C671.25,-140.247 748.104,-121.102 803.251,-107.364"/>
+<polygon fill="black" stroke="black" points="804.426,-110.679 813.284,-104.865 802.734,-103.886 804.426,-110.679"/>
+</g>
+<!-- lhs -->
+<g id="node12" class="node"><title>lhs</title>
+<ellipse fill="none" stroke="black" cx="718.942" cy="-18" rx="141.075" ry="18"/>
+<text text-anchor="middle" x="718.942" y="-14.3" font-family="Times,serif" font-size="14.00">*ast.BasicLit (Kind: INT) (Value: 1)</text>
+</g>
+<!-- args1&#45;&gt;lhs -->
+<g id="edge11" class="edge"><title>args1&#45;&gt;lhs</title>
+<path fill="none" stroke="black" d="M834.904,-73.1159C813.785,-63.26 786.413,-50.4867 763.567,-39.825"/>
+<polygon fill="black" stroke="black" points="764.951,-36.6089 754.409,-35.5516 761.991,-42.9522 764.951,-36.6089"/>
+</g>
+<!-- rhs -->
+<g id="node13" class="node"><title>rhs</title>
+<ellipse fill="none" stroke="black" cx="1018.94" cy="-18" rx="141.075" ry="18"/>
+<text text-anchor="middle" x="1018.94" y="-14.3" font-family="Times,serif" font-size="14.00">*ast.BasicLit (Kind: INT) (Value: 1)</text>
+</g>
+<!-- args1&#45;&gt;rhs -->
+<g id="edge12" class="edge"><title>args1&#45;&gt;rhs</title>
+<path fill="none" stroke="black" d="M902.979,-73.1159C924.099,-63.26 951.47,-50.4867 974.317,-39.825"/>
+<polygon fill="black" stroke="black" points="975.892,-42.9522 983.474,-35.5516 972.932,-36.6089 975.892,-42.9522"/>
+</g>
+</g>
+</svg>
+</div>
+
+<p>By this, we can also say that any equation that can be represented as a computer program, and a computer program can be represented as a graph. In particular, let&rsquo;s zoom in <code>1+1</code> part:</p>
+
+<p>This corresponds to this part of the cleaned up graph (with unnecessary nodes removed):</p>
+
+<div style="margin-left:auto; margin-right:auto;">
+<svg style="width:100%; height:auto;"
+ viewBox="0.00 0.00 590.07 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>%3</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-112 586.075,-112 586.075,4 -4,4"/>
+<!-- args1 -->
+<g id="node1" class="node"><title>args1</title>
+<ellipse fill="none" stroke="black" cx="291.037" cy="-90" rx="97.4827" ry="18"/>
+<text text-anchor="middle" x="291.037" y="-86.3" font-family="Times,serif" font-size="14.00">*ast.BinaryExpr (Op: +)</text>
+</g>
+<!-- lhs -->
+<g id="node2" class="node"><title>lhs</title>
+<ellipse fill="none" stroke="black" cx="141.037" cy="-18" rx="141.075" ry="18"/>
+<text text-anchor="middle" x="141.037" y="-14.3" font-family="Times,serif" font-size="14.00">*ast.BasicLit (Kind: INT) (Value: 1)</text>
+</g>
+<!-- args1&#45;&gt;lhs -->
+<g id="edge1" class="edge"><title>args1&#45;&gt;lhs</title>
+<path fill="none" stroke="black" d="M257,-73.1159C235.88,-63.26 208.509,-50.4867 185.663,-39.825"/>
+<polygon fill="black" stroke="black" points="187.047,-36.6089 176.505,-35.5516 184.087,-42.9522 187.047,-36.6089"/>
+</g>
+<!-- rhs -->
+<g id="node3" class="node"><title>rhs</title>
+<ellipse fill="none" stroke="black" cx="441.037" cy="-18" rx="141.075" ry="18"/>
+<text text-anchor="middle" x="441.037" y="-14.3" font-family="Times,serif" font-size="14.00">*ast.BasicLit (Kind: INT) (Value: 1)</text>
+</g>
+<!-- args1&#45;&gt;rhs -->
+<g id="edge2" class="edge"><title>args1&#45;&gt;rhs</title>
+<path fill="none" stroke="black" d="M325.075,-73.1159C346.195,-63.26 373.566,-50.4867 396.412,-39.825"/>
+<polygon fill="black" stroke="black" points="397.988,-42.9522 405.57,-35.5516 395.028,-36.6089 397.988,-42.9522"/>
+</g>
+</g>
+</svg>
+
+</div>
+
+<p>The graph is traversed in a depth-first manner, starting from the top. The values of the program flow from bottom to top. When the program runs, it starts right at the top. The node will not be resolved until the dependent nodes have been evaluated. The arrows point to what each node depends on. So for example, the value of the <code>*ast.BinaryExpr</code> node is dependent on the values of <code>*ast.BasicLit (Kind: INT)</code>. Since we know both values are <code>1</code>, and we know what <code>+</code> does, we know that the value at the node <code>*ast.BinaryExpr</code> is <code>2</code>.</p>
+
+<h2 id="equations-as-graphs">Equations As Graphs</h2>
+
+<p>Now why did we spend all that time show 1+1 in graph form? Well, it&rsquo;s because deep learning is really in its core, just a bunch of mathematical equations. Wait, don&rsquo;t go yet! It&rsquo;s not that scary. I am personally of the opinion that one can&rsquo;t really do deep learning (or any machine learning, really) without understanding the mathematics behind it. And in my experience there hasn&rsquo;t been a better way to learn it than visually, if only to internalize the concepts.</p>
+
+<p>Most deep learning libraries like <a href="https://tensorflow.org" target="_blank">Tensorflow</a>, <a href="https://deeplearning.org/theano" target="_blank">Theano</a>, or even my own for Go - <a href="https://github.com/chewxy/gorgonia" target="_blank">Gorgonia</a>, rely on this core concept that equations are representable by graphs. More importantly, these libraries expose the equation graphs as objects that can be manipulated by the programmer.</p>
+
+<p>So instead of the program above, we&rsquo;d create something like this:</p>
+
+<pre><code class="language-go">func main() {
+	// Create a graph.
+	g := G.NewGraph()                         
+	
+	// Create a node called &quot;x&quot; with the value 1.
+	x := G.NodeFromAny(g, 1, G.WithName(&quot;x&quot;)) 
+	
+	// Create a node called &quot;y&quot; with the value 1.
+	y := G.NodeFromAny(g, 1, G.WithName(&quot;y&quot;)) 
+	
+	// z := x + y
+	z := G.Must(G.Add(x, y))                  
+
+	// Create a VM to execute the graph.
+	vm := G.NewTapeMachine(g) 
+
+	// Run the VM. Errors are not checked.
+	vm.RunAll()               
+
+	// Print the value of z.
+	fmt.Printf(&quot;%v&quot;, z.Value()) 
+}
+</code></pre>
+
+<p>The equation graph looks like this:</p>
+
+<div style="margin-left:auto; margin-right:auto;">
+<svg style="width:100%; height:auto;"
+ viewBox="0.00 0.00 715.00 360.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 356)">
+<title>fullGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-356 1109.3,-356 1109.3,4 -4,4"/>
+<g id="clust1" class="cluster"><title>cluster_expressionGraph</title>
+<polygon fill="none" stroke="black" points="8,-192 8,-344 574,-344 574,-192 8,-192"/>
+<text text-anchor="middle" x="291" y="-328.8" font-family="Times,serif" font-size="14.00">expressionGraph</text>
+</g>
+<!-- Node_0xc420146300 -->
+<g id="node1" class="node"><title>Node_0xc420146300</title>
+<polygon fill="none" stroke="#ff0000" points="206,-287.5 206,-308.5 254,-308.5 254,-287.5 206,-287.5"/>
+<text text-anchor="start" x="225.5" y="-294.3" font-family="monospace" font-size="14.00">2</text>
+<polygon fill="none" stroke="#ff0000" points="254,-287.5 254,-308.5 558,-308.5 558,-287.5 254,-287.5"/>
+<text text-anchor="start" x="257" y="-294.3" font-family="monospace" font-size="14.00">+ false(%a8d96c31, %82d6f1c8) :: int</text>
+<polygon fill="none" stroke="#ff0000" points="206,-266.5 206,-287.5 254,-287.5 254,-266.5 206,-266.5"/>
+<text text-anchor="start" x="221.5" y="-273.3" font-family="monospace" font-size="14.00">Op</text>
+<polygon fill="none" stroke="#ff0000" points="254,-266.5 254,-287.5 558,-287.5 558,-266.5 254,-266.5"/>
+<text text-anchor="start" x="323" y="-273.3" font-family="monospace" font-size="14.00">+ false :: a → a → a</text>
+<polygon fill="none" stroke="#ff0000" points="206,-245.5 206,-266.5 558,-266.5 558,-245.5 206,-245.5"/>
+<text text-anchor="start" x="373.5" y="-252.3" font-family="monospace" font-size="14.00">()</text>
+<polygon fill="none" stroke="#ff0000" points="206,-224.5 206,-245.5 558,-245.5 558,-224.5 206,-224.5"/>
+<text text-anchor="start" x="373.5" y="-231.3" font-family="monospace" font-size="14.00">&#45;1</text>
+<polygon fill="none" stroke="#ff0000" points="206,-203.5 206,-224.5 254,-224.5 254,-203.5 206,-203.5"/>
+<text text-anchor="start" x="209" y="-210.3" font-family="monospace" font-size="14.00">Value</text>
+<polygon fill="none" stroke="#ff0000" points="254,-203.5 254,-224.5 558,-224.5 558,-203.5 254,-203.5"/>
+<text text-anchor="start" x="377" y="-210.3" font-family="monospace" font-size="14.00">2 :: int</text>
+</g>
+<!-- Node_0xc420146000 -->
+<g id="node2" class="node"><title>Node_0xc420146000</title>
+<polygon fill="lightyellow" stroke="none" points="217.5,-4 217.5,-88 338.5,-88 338.5,-4 217.5,-4"/>
+<polygon fill="none" stroke="#00ff00" points="218,-67 218,-88 266,-88 266,-67 218,-67"/>
+<text text-anchor="start" x="237.5" y="-73.8" font-family="monospace" font-size="14.00">0</text>
+<polygon fill="none" stroke="#00ff00" points="266,-67 266,-88 339,-88 339,-67 266,-67"/>
+<text text-anchor="start" x="269" y="-73.8" font-family="monospace" font-size="14.00">x :: int</text>
+<polygon fill="none" stroke="#00ff00" points="218,-46 218,-67 339,-67 339,-46 218,-46"/>
+<text text-anchor="start" x="270" y="-52.8" font-family="monospace" font-size="14.00">()</text>
+<polygon fill="none" stroke="#00ff00" points="218,-25 218,-46 339,-46 339,-25 218,-25"/>
+<text text-anchor="start" x="270" y="-31.8" font-family="monospace" font-size="14.00">&#45;1</text>
+<polygon fill="none" stroke="#00ff00" points="218,-4 218,-25 266,-25 266,-4 218,-4"/>
+<text text-anchor="start" x="221" y="-10.8" font-family="monospace" font-size="14.00">Value</text>
+<polygon fill="none" stroke="#00ff00" points="266,-4 266,-25 339,-25 339,-4 266,-4"/>
+<text text-anchor="start" x="273.5" y="-10.8" font-family="monospace" font-size="14.00">1 :: int</text>
+</g>
+<!-- Node_0xc420146300&#45;&gt;Node_0xc420146000 -->
+<g id="edge1" class="edge"><title>Node_0xc420146300⚓️s&#45;&gt;Node_0xc420146000⚓️n</title>
+<path fill="none" stroke="black" d="M382,-202.5C382,-137.689 288.68,-155.213 278.837,-99.0855"/>
+<polygon fill="black" stroke="black" points="282.315,-98.6762 278,-89 275.339,-99.2553 282.315,-98.6762"/>
+<text text-anchor="middle" x="385.75" y="-191.3" font-family="Times,serif" font-size="14.00"> 0 </text>
+</g>
+<!-- Node_0xc420146240 -->
+<g id="node3" class="node"><title>Node_0xc420146240</title>
+<polygon fill="lightyellow" stroke="none" points="426.5,-4 426.5,-88 547.5,-88 547.5,-4 426.5,-4"/>
+<polygon fill="none" stroke="#00ff00" points="427,-67 427,-88 475,-88 475,-67 427,-67"/>
+<text text-anchor="start" x="446.5" y="-73.8" font-family="monospace" font-size="14.00">1</text>
+<polygon fill="none" stroke="#00ff00" points="475,-67 475,-88 548,-88 548,-67 475,-67"/>
+<text text-anchor="start" x="478" y="-73.8" font-family="monospace" font-size="14.00">y :: int</text>
+<polygon fill="none" stroke="#00ff00" points="427,-46 427,-67 548,-67 548,-46 427,-46"/>
+<text text-anchor="start" x="479" y="-52.8" font-family="monospace" font-size="14.00">()</text>
+<polygon fill="none" stroke="#00ff00" points="427,-25 427,-46 548,-46 548,-25 427,-25"/>
+<text text-anchor="start" x="479" y="-31.8" font-family="monospace" font-size="14.00">&#45;1</text>
+<polygon fill="none" stroke="#00ff00" points="427,-4 427,-25 475,-25 475,-4 427,-4"/>
+<text text-anchor="start" x="430" y="-10.8" font-family="monospace" font-size="14.00">Value</text>
+<polygon fill="none" stroke="#00ff00" points="475,-4 475,-25 548,-25 548,-4 475,-4"/>
+<text text-anchor="start" x="482.5" y="-10.8" font-family="monospace" font-size="14.00">1 :: int</text>
+</g>
+<!-- Node_0xc420146300&#45;&gt;Node_0xc420146240 -->
+<g id="edge2" class="edge"><title>Node_0xc420146300⚓️s&#45;&gt;Node_0xc420146240⚓️n</title>
+<path fill="none" stroke="black" d="M382,-202.5C382,-137.404 476.218,-155.453 486.155,-99.1258"/>
+<polygon fill="black" stroke="black" points="489.656,-99.2565 487,-89 482.68,-98.6742 489.656,-99.2565"/>
+<text text-anchor="middle" x="374.5" y="-191.3" font-family="Times,serif" font-size="14.00"> 1 </text>
+</g>
+<!-- outsideRoot -->
+<!-- insideInputs -->
+<!-- outsideRoot&#45;&gt;insideInputs -->
+<!-- outsideExprG -->
+<!-- outsideRoot&#45;&gt;outsideExprG -->
+<!-- insideExprG -->
+<!-- insideInputs&#45;&gt;insideExprG -->
+<!-- outsideExprG&#45;&gt;insideExprG -->
+</g>
+</svg>
+
+
+</div>
+
+<h2 id="why-graph-objects">Why Graph Objects?</h2>
+
+<p>So far you might be thinking - if all computer programs are graphs, and all mathematical equations are graphs, we could just program the mathematical equations in, right? Why write the above example with object graphs when a simple <code>fmt.Printf(&quot;%v&quot;, 1+1)</code> would do? Afterall, the graphs are mostly the same. Having a graph object at this point seem like a silly amount of overhead.</p>
+
+<p>You would be right. For simple equations, having a programmer manipulatable graph object is really overkill (unless you live in Java land, where it&rsquo;s classes all the way down).</p>
+
+<p>I would however, posit at least three advantages of having a graph object. All of these have got to do with reducing human errors.</p>
+
+<h3 id="numerical-stability">Numerical Stability</h3>
+
+<p>Consider the equation $y = log(1 + x)$. This equation is not <a href="https://en.wikipedia.org/wiki/Numerical_stability" target="_blank">numerically stable</a> - for very small values of <code>x</code>, the answer will most likely be wrong. This is because of the way <code>float64</code> is designed - a <code>float64</code> does not have enough bits to be able to tell apart <code>1</code> and <code>1 + 10e-16</code>. In fact, the correct way to do $latex y = log(1 + x)$ is to use the built in library function <code>math.Log1p</code>. It can be shown in this simple program:</p>
+
+<pre><code class="language-go">func main() {
+	fmt.Printf(&quot;%v\n&quot;, math.Log(1.0+10e-16))
+	fmt.Printf(&quot;%v\n&quot;, math.Log1p(10e-16))
+}
+
+1.110223024625156e-15 // wrong
+9.999999999999995e-16 // correct
+</code></pre>
+
+<p>Now, of course the programmer may be well aware of this issue and opt to use <code>math.Log1p</code> when implementing neural network algorithms, but I&rsquo;m sure you&rsquo;d agree that having a library that automatically converts <code>log(1+x)</code> to use <code>math.Log1p(x)</code> be rather awesome? It reduces the element of human error.</p>
+
+<h3 id="machine-learning-specific-optimizations">Machine-Learning Specific Optimizations</h3>
+
+<p>Consider a variant of the first program in this post:</p>
+
+<pre><code class="language-go">func a() int {
+	return 1 + 1
+}
+</code></pre>
+
+<p>This is the same program compiled down to assembly:</p>
+
+<pre><code>&quot;&quot;.a t=1 size=10 args=0x8 locals=0x0
+	(main.go:5)	TEXT	&quot;&quot;.a(SB), $0-8
+	(main.go:5)	FUNCDATA	$0, gclocals·2a5305abe05176240e61b8620e19a815(SB)
+	(main.go:5)	FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+	(main.go:6)	MOVQ	$2, &quot;&quot;.~r0+8(FP)
+	(main.go:6)	RET
+</code></pre>
+
+<p>In particular, pay attention to the second last line: <code>MOVQ $2, &quot;&quot;.~r0+8(FP)</code>. The function has been optimized in such a way that <code>2</code> is returned. No addition operation will be performed at run time. This is because the compiler knows, <em>at compile time</em>, that 1 + 1 = 2. By replacing the expression with a constant, the compiler is saving on computation cycles at run time. If you&rsquo;re interested in building compilers, this is known as <a href="https://en.wikipedia.org/wiki/Constant_folding" target="_blank">constant folding</a>.</p>
+
+<p>So, we&rsquo;ve established that compilers are smart enough to do optimizations. But the Go compiler (and in fact most non-machine-learning specific compilers) isn&rsquo;t smart enough to handle values that are used for machine learning. For machine learning, we frequently use array-based values, like a slice of <code>float64</code>s, or a matrix of <code>float32</code>s.</p>
+
+<p>Imagine if you will, if you&rsquo;re not doing <code>1 + 1</code>. Instead you&rsquo;re doing <code>[]int{1, 1, 1} + []int{1,1,1}</code>. The compiler wouldn&rsquo;t be able to optimize this and just replace it with <code>[]int{2, 2, 2}</code>. But building a graph object that can be optimized allows users to do just that. Gorgonia currently doesn&rsquo;t do constant folding yet (earlier versions had constant folding but it is quite difficult to get right), but it comes with other forms of graph optimizations like <a href="https://en.wikipedia.org/wiki/Common_subexpression_elimination" target="_blank">common expression elimination</a>, some amount of variable elimination and some minimal form of tree shaking. Other more mature libraries like TensorFlow or Theano comes with very many optimization algorithms for their graphs.</p>
+
+<p>Again, one could argue that this could be done by hand, and coding it into the program would be more than doable. But is this really where you&rsquo;d rather spend your time and effort? Or would you rather be creating the coolest new deep learning stuff?</p>
+
+<h3 id="backpropagation">Backpropagation</h3>
+
+<p>Lastly, and most importantly, the graph object is most important in the implementation of backpropagation. In the following posts, I will talk about backpropagation and how it relates to computing partial derivatives. It&rsquo;s there we shall see the true power of having graph objects that are manipulatable by the programmer.</p>
+
+<p>In a far future post, I shall also touch on the capacity to generate better code, using the graph object.</p>
+
+<h2 id="why-go">Why Go?</h2>
+
+<p>If you&rsquo;re working on a truly homoiconic language such as lisp or Julia, you probably wouldn&rsquo;t need a graph object. If you could have access to the program&rsquo;s internal data structures and they&rsquo;re modifiable on the fly at run time, you would be able to augment plenty of the operations on the fly (yes, you can do the same for Go, but why would you?). This would make backpropagation algorithms a lot simpler to perform at runtime. Unfortunately this isn&rsquo;t the case. Which is why we&rsquo;d have to build up extra data structures for deep learning.</p>
+
+<p>Do note that this isn&rsquo;t a knock on Go or Python or Lua. All of these languages have their strengths and weaknesses. But why do deep learning related work in Go when there are more mature libraries in Python or Lua? Well, one of the major reasons I developed Gorgonia was the ability to deploy everything neatly into one single binary. Doing that with Python or Lua would take an immense amount of effort. By contrast, deploying Go programs are a breeze.</p>
+
+<p>I believe that Go for data science is an amazing idea. It is typesafe (enough for me), and it&rsquo;s compiled down to binary. Go allows for better mechanical sympathy, which I believe is key to having faster and better AI out there. Afterall, we are ALL bound by our hardware. I just wish there were better higher level data structures for me to express my ideas. There weren&rsquo;t, so I built them. And I hope you use them.</p>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+    <li class="previous"><a href="http://gopherdata.io/post/introduction_to_gopherdata"><span
+      aria-hidden="true">&larr;</span> Welcome to GopherData</a></li>
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2017 GopherData &middot; 
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/isotope.pkgd.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    <script async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    
+
+  </body>
+</html>
+
