@@ -524,7 +524,7 @@
 
 <h3 id="numerical-stability">Numerical Stability</h3>
 
-<p>Consider the equation $y = log(1 + x)$. This equation is not <a href="https://en.wikipedia.org/wiki/Numerical_stability" target="_blank">numerically stable</a> - for very small values of <code>x</code>, the answer will most likely be wrong. This is because of the way <code>float64</code> is designed - a <code>float64</code> does not have enough bits to be able to tell apart <code>1</code> and <code>1 + 10e-16</code>. In fact, the correct way to do $latex y = log(1 + x)$ is to use the built in library function <code>math.Log1p</code>. It can be shown in this simple program:</p>
+<p>Consider the equation $y = log(1 + x)$. This equation is not <a href="https://en.wikipedia.org/wiki/Numerical_stability" target="_blank">numerically stable</a> - for very small values of <code>x</code>, the answer will most likely be wrong. This is because of the way <code>float64</code> is designed - a <code>float64</code> does not have enough bits to be able to tell apart <code>1</code> and <code>1 + 10e-16</code>. In fact, the correct way to do $ y = log(1 + x)$ is to use the built in library function <code>math.Log1p</code>. It can be shown in this simple program:</p>
 
 <pre><code class="language-go">func main() {
 	fmt.Printf(&quot;%v\n&quot;, math.Log(1.0+10e-16))

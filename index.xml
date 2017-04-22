@@ -364,7 +364,7 @@
 
 &lt;h3 id=&#34;numerical-stability&#34;&gt;Numerical Stability&lt;/h3&gt;
 
-&lt;p&gt;Consider the equation $y = log(1 + x)$. This equation is not &lt;a href=&#34;https://en.wikipedia.org/wiki/Numerical_stability&#34; target=&#34;_blank&#34;&gt;numerically stable&lt;/a&gt; - for very small values of &lt;code&gt;x&lt;/code&gt;, the answer will most likely be wrong. This is because of the way &lt;code&gt;float64&lt;/code&gt; is designed - a &lt;code&gt;float64&lt;/code&gt; does not have enough bits to be able to tell apart &lt;code&gt;1&lt;/code&gt; and &lt;code&gt;1 + 10e-16&lt;/code&gt;. In fact, the correct way to do $latex y = log(1 + x)$ is to use the built in library function &lt;code&gt;math.Log1p&lt;/code&gt;. It can be shown in this simple program:&lt;/p&gt;
+&lt;p&gt;Consider the equation $y = log(1 + x)$. This equation is not &lt;a href=&#34;https://en.wikipedia.org/wiki/Numerical_stability&#34; target=&#34;_blank&#34;&gt;numerically stable&lt;/a&gt; - for very small values of &lt;code&gt;x&lt;/code&gt;, the answer will most likely be wrong. This is because of the way &lt;code&gt;float64&lt;/code&gt; is designed - a &lt;code&gt;float64&lt;/code&gt; does not have enough bits to be able to tell apart &lt;code&gt;1&lt;/code&gt; and &lt;code&gt;1 + 10e-16&lt;/code&gt;. In fact, the correct way to do $ y = log(1 + x)$ is to use the built in library function &lt;code&gt;math.Log1p&lt;/code&gt;. It can be shown in this simple program:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func main() {
 	fmt.Printf(&amp;quot;%v\n&amp;quot;, math.Log(1.0+10e-16))
