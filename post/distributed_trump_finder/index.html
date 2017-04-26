@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.20-DEV" />
+  <meta name="author" content="GopherData">
+  <meta name="description" content="Users and developers of Go data processing, analytics, and visualization tools.">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/highlight.min.css">
+    
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/academicons.min.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Merriweather|Roboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  <link rel="alternate" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+  <link rel="feed" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="http://gopherdata.io/post/distributed_trump_finder">
+
+  
+
+  <title>Building a distributed Trump finder | GopherData</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">GopherData</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#talks">
+            
+            <span>Events</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="http://github.com/gopherdata/resources">
+            
+            <span>Resources</span>
+          </a>
+        </li>
+
+        
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+  <div class="article-header">
+    <img src="/img//headers/trump_finder.jpg" class="article-banner" itemprop="image">
+    
+  </div>
+  
+
+  <div class="article-container">
+    <h1 itemprop="name">Building a distributed Trump finder</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-04-26 12:00:00 &#43;0000 UTC" itemprop="datePublished">
+      Wed, Apr 26, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/academic">academic</a
+    >, 
+    
+    <a href="/tags/hugo">hugo</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder"
+         target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Building%20a%20distributed%20Trump%20finder&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder"
+         target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder&amp;title=Building%20a%20distributed%20Trump%20finder"
+         target="_blank">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder&amp;title=Building%20a%20distributed%20Trump%20finder"
+         target="_blank">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Building%20a%20distributed%20Trump%20finder&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      <p>(Author: Daniel Whitenack, @dwhitena on <a href="https://twitter.com/dwhitena" target="_blank">Twitter</a> and Gophers Slack)</p>
+
+<p>If you haven&rsquo;t heard, there is a new kid on the machine learning block named <a href="https://machinebox.io/" target="_blank">Machine Box</a>.  It&rsquo;s pretty cool, and you should check it out.  Machine Box provides pre-built Docker images that enable easy, production ready, and reproducible machine learning operations.  For example, you can get a &ldquo;facebox&rdquo; Docker image from Machine Box for facial recognition. When you run &ldquo;facebox,&rdquo; you get a full JSON API that lets you to easily &ldquo;teach&rdquo; facebox certain people&rsquo;s faces, identify those faces in images, and persist the &ldquo;state&rdquo; of trained facial recognition models.</p>
+
+<p>Experimenting with &ldquo;facebox&rdquo; got me thinking about how it could be integrated into some of my workflows.  In particular, I wanted to see how Machine Box images could be utilized as part of distributed data processing pipeline built with <a href="http://pachyderm.io/" target="_blank">Pachyderm</a>.  Pachyderm builds, runs, and manages pipelines, such as machine learning workflows, based on Docker images.  Thus, an integration of Machine Box images seems to be only natural.</p>
+
+<p>And that&rsquo;s how the first (to my knowledge) distributed, Docker-ized, &ldquo;Trump-finding&rdquo; data pipeline came to be. In the sections below we will walk through the creation of a facial recognition pipeline that is able to find and tag the location of Donald Trump&rsquo;s face in images.  Actually, this pipeline could be used to identify any faces, and we will illustrate this flexibility by updating the pipeline to learn a second face, Hillary Clinton.</p>
+
+<p>The below sections assume that you have a Pachyderm cluster running, that <code>pachctl</code>(the Pachyderm CLI tool) is connected to that cluster, and that you have signed up for a Machine Box key (which you can do for free).  All the code and more detailed instructions can be found <a href="https://github.com/dwhitena/pach-machine-box" target="_blank">here</a>.</p>
+
+<p><strong>Create the pipeline inputs</strong>:</p>
+
+<p>To train our facial recognition model, identify faces in images, and tag those faces with certain labels, we need to create three &ldquo;data repositories&rdquo; that will be the inputs to our Pachyderm pipeline:</p>
+
+<ol>
+<li><code>training</code> - which includes images of faces that we use to &ldquo;teach&rdquo; facebox</li>
+<li><code>unidentified</code> - which includes images with faces we want to detect and identify</li>
+<li><code>labels</code> - which includes label images that we will overlay on the unidentified images to indicate identified faces</li>
+</ol>
+
+<p>This can be done with <code>pachctl</code>:</p>
+
+<pre><code class="language-sh">➔ pachctl create-repo training
+➔ pachctl create-repo unidentified
+➔ pachctl create-repo labels
+➔ pachctl list-repo
+NAME                CREATED             SIZE                
+labels              3 seconds ago       0 B                 
+unidentified        11 seconds ago      0 B                 
+training            17 seconds ago      0 B
+➔ cd data/train/faces1/
+➔ ls
+trump1.jpg  trump2.jpg  trump3.jpg  trump4.jpg  trump5.jpg
+➔ pachctl put-file training master -c -r -f .
+➔ pachctl list-repo
+NAME                CREATED             SIZE                
+training            5 minutes ago       486.2 KiB           
+labels              5 minutes ago       0 B                 
+unidentified        5 minutes ago       0 B                 
+➔ pachctl list-file training master
+NAME                TYPE                SIZE                
+trump1.jpg          file                78.98 KiB           
+trump2.jpg          file                334.5 KiB           
+trump3.jpg          file                11.63 KiB           
+trump4.jpg          file                27.45 KiB           
+trump5.jpg          file                33.6 KiB 
+➔ cd ../../labels/
+➔ ls
+clinton.jpg  trump.jpg
+➔ pachctl put-file labels master -c -r -f .
+➔ cd ../unidentified/
+➔ ls
+image1.jpg  image2.jpg
+➔ pachctl put-file unidentified master -c -r -f .
+➔ pachctl list-repo
+NAME                CREATED             SIZE                
+unidentified        7 minutes ago       540.4 KiB           
+labels              7 minutes ago       15.44 KiB           
+training            7 minutes ago       486.2 KiB
+</code></pre>
+
+<p><strong>Train, or &ldquo;teach,&rdquo; facebox</strong>:</p>
+
+<p>Next, we create a Pachyderm pipeline stage that will take the <code>training</code> data as input, provide those training images to facebox, and output the &ldquo;state&rdquo; of a trained model.  This is done by providing Pachyderm with a pipeline spec, <a href="https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/train.json" target="_blank">train.json</a>.  This pipeline spec specifies the Docker image to use for data processing, the commands to execute in that Docker container, and what data is input to the pipeline.</p>
+
+<p>In our particular case, <code>train.json</code> specifies that we should use an image based on the facebox image from Machine Box and execute a number of cURL commands to post the training data to facebox.  Once those training images are provided to and processed by facebox, we specify another cURL command to export the state of the facebox model (for use later in our pipeline).</p>
+
+<p>We are using a little bash magic here to perform these operations.  However, it is very possible that, in the future, Machine Box will provide a more standardized command line implementation for these sorts of use cases.</p>
+
+<pre><code class="language-sh">create-MB-pipeline.sh  identify.json  tag.json  train.json
+➔ ./create-MB-pipeline.sh train.json 
+➔ pachctl list-pipeline
+NAME                INPUT               OUTPUT              STATE               
+model               training            model/master        running    
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT STARTED       DURATION RESTART PROGRESS STATE            
+3425a7a0-543e-4e2a-a244-a3982c527248 model/-       9 seconds ago -        1       0 / 1    running 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 5 minutes ago 5 minutes 1       1 / 1    success 
+➔ pachctl list-repo
+NAME                CREATED             SIZE                
+model               5 minutes ago       4.118 KiB           
+unidentified        18 minutes ago      540.4 KiB           
+labels              18 minutes ago      15.44 KiB           
+training            19 minutes ago      486.2 KiB           
+➔ pachctl list-file model master
+NAME                TYPE                SIZE                
+state.facebox       file                4.118 KiB
+</code></pre>
+
+<p>As you can see the output of this pipeline is a <code>.facebox</code> file that contained the trained state of our facebox model.</p>
+
+<p><strong>Use the trained facebox to identify faces</strong>:</p>
+
+<p>We then launch another Pachyderm pipeline, based on an <a href="https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/identify.json" target="_blank">identify.json</a> pipeline specification, to identify faces within the <code>unidentified</code> images.  This pipeline will take the persisted state of our model in <code>model</code> along with the <code>unidentified</code> images as input.  It will also execute cURL commands to interact with facebox, and it will output indications of identified faces to JSON files, one per <code>unidentified</code> image.</p>
+
+<pre><code class="language-sh">➔ ./create-MB-pipeline.sh identify.json 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/-                             6 seconds ago -         0       0 / 2    running 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 8 minutes ago 5 minutes 1       1 / 1    success 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 About a minute ago 53 seconds 0       2 / 2    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    9 minutes ago      5 minutes  1       1 / 1    success 
+➔ pachctl list-repo
+NAME                CREATED              SIZE                
+identify            About a minute ago   1.932 KiB           
+model               10 minutes ago       4.118 KiB           
+unidentified        23 minutes ago       540.4 KiB           
+labels              23 minutes ago       15.44 KiB           
+training            24 minutes ago       486.2 KiB           
+➔ pachctl list-file identify master
+NAME                TYPE                SIZE                
+image1.json         file                1.593 KiB           
+image2.json         file                347 B
+</code></pre>
+
+<p>If we look at the JSON output for, e.g., <code>image1.jpg</code>, we can see that there is a portion of the file that clearly identifies Donald Trump in the image along with the location and size of his face in the image:</p>
+
+<pre><code>{
+	&quot;success&quot;: true,
+	&quot;facesCount&quot;: 13,
+	&quot;faces&quot;: [
+		...
+		...
+		{
+			&quot;rect&quot;: {
+				&quot;top&quot;: 175,
+				&quot;left&quot;: 975,
+				&quot;width&quot;: 108,
+				&quot;height&quot;: 108
+			},
+			&quot;id&quot;: &quot;58ff31510f7707a01fb3e2f4d39f26dc&quot;,
+			&quot;name&quot;: &quot;trump&quot;,
+			&quot;matched&quot;: true
+		},
+		...
+		...
+	]
+}
+</code></pre>
+
+<p><strong>Tagging identified faces in the images</strong>:</p>
+
+<p>We are most of the way there! We have identified Trump in the <code>unidentified</code> images, but the JSON output isn&rsquo;t the most visually appealling.  As such, let&rsquo;s overlay a label on the images at the location of Trump&rsquo;s face.</p>
+
+<p>To do this, we can use a <a href="https://github.com/dwhitena/pach-machine-box/blob/master/tagimage/main.go" target="_blank">simple Go program</a> to draw the label image on the <code>unidentified</code> image at the appropriate location.  This part of the pipeline is specified by a <a href="https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/tag.json" target="_blank">tag.json</a> pipeline specification, and can be created as follows:</p>
+
+<pre><code class="language-sh">➔ pachctl create-pipeline -f tag.json 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/-                                     2 seconds ago  -          0       0 / 2    running 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    13 minutes ago 5 minutes  1       1 / 1    success 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      25 seconds ago 11 seconds 0       2 / 2    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    14 minutes ago 5 minutes  1       1 / 1    success 
+➔ pachctl list-repo
+NAME                CREATED             SIZE                
+tag                 30 seconds ago      591.3 KiB           
+identify            5 minutes ago       1.932 KiB           
+model               14 minutes ago      4.118 KiB           
+unidentified        27 minutes ago      540.4 KiB           
+labels              27 minutes ago      15.44 KiB           
+training            27 minutes ago      486.2 KiB           
+➔ pachctl list-file tag master
+NAME                TYPE                SIZE                
+tagged_image1.jpg   file                557 KiB             
+tagged_image2.jpg   file                34.35 KiB           
+</code></pre>
+
+<p>As you can see, we now have two &ldquo;tagged&rdquo; versions of the images in the output <code>tag</code> data repository.  If we get these images, we can see that&hellip; Boom! Our Trump finder works:</p>
+
+<p><img src="https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images1.jpg" alt="alt text" /></p>
+
+<p><strong>Teaching a new faces, updating the output</strong>:</p>
+
+<p>Our pipeline isn&rsquo;t restricted to Trump or any one face.  Actually, we can teach facebox another face by updating our <code>training</code>.  Moreover, becauce Pachyderm verions your data and know what data is new, it can automatically update all our results once facebox learns the new face:</p>
+
+<pre><code class="language-sh">➔ cd ../data/train/faces2/
+➔ ls
+clinton1.jpg  clinton2.jpg  clinton3.jpg  clinton4.jpg
+➔ pachctl put-file training master -c -r -f .
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/-                                   4 seconds ago  -          0       0 / 1    running 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      6 minutes ago  11 seconds 0       2 / 2    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 11 minutes ago 53 seconds 0       2 / 2    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    20 minutes ago 5 minutes  1       1 / 1    success 
+➔ pachctl list-job
+ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
+6aa6c995-58ce-445d-999a-eb0e0690b041 tag/7cbd2584d4f0472abbca0d9e015b9829      5 seconds ago      1 seconds  0       2 / 2    success 
+8a7961b7-1085-404a-b0ee-66034fae7212 identify/1bc94ec558e44e0cb45ed5ab7d9f9674 59 seconds ago     54 seconds 0       2 / 2    success 
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/002f16b63a4345a4bc6bdf5510c9faac    About a minute ago 19 seconds 0       1 / 1    success 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      8 minutes ago      11 seconds 0       2 / 2    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 13 minutes ago     53 seconds 0       2 / 2    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    21 minutes ago     5 minutes  1       1 / 1    success 
+➔ pachctl list-file tag master
+NAME                TYPE                SIZE                
+tagged_image1.jpg   file                557 KiB             
+tagged_image2.jpg   file                36.03 KiB
+</code></pre>
+
+<p>Now if we look at our images, we find that everything has been updated without any annoying manual work on our end:</p>
+
+<p><img src="https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images2.jpg" alt="alt text" /></p>
+
+<p><strong>Conclusion/Resources</strong>:</p>
+
+<p>As you can see, Machine Box and Pachyderm make it really quick and easy to deploy a distributed, machine learning data pipeline.  Be sure to:</p>
+
+<ul>
+<li>Visit <a href="https://github.com/dwhitena/pach-machine-box" target="_blank">this repo</a> to get the code and pipeline specs, so you can create your own Trump finder!</li>
+<li>Join the <a href="http://slack.pachyderm.io/" target="_blank">Pachyderm Slack team</a> to get help implementing your ML pipelines, and participate in the discussion in the #data-science channel on Gophers Slack.</li>
+<li>Follow <a href="https://twitter.com/pachydermIO" target="_blank">Pachyderm on Twitter</a>,</li>
+<li>Sign up for a free <a href="https://machinebox.io/" target="_blank">Machine Box</a> API key, and</li>
+<li>Follow <a href="https://twitter.com/machineboxio" target="_blank">Machine Box on Twitter</a>.</li>
+</ul>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+    <li class="previous"><a href="http://gopherdata.io/post/deeplearning_in_go_part_1"><span
+      aria-hidden="true">&larr;</span> Deep Learning from Scratch in Go - Part 1: Equations Are Graphs</a></li>
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2017 GopherData &middot; 
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/isotope.pkgd.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+
+  </body>
+</html>
+
