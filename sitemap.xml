@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
+
+    <url>
+      <loc>http://gopherdata.io/talk/20170715_gopherdataparty</loc>
+      <lastmod>2017-07-15T00:00:00+00:00</lastmod>
+    </url>
+
     <url>
       <loc>http://gopherdata.io/talk/20170615_workshop</loc>
       <lastmod>2017-06-15T00:00:00+00:00</lastmod>
-    </url>    
-
-    <url>
-      <loc>http://gopherdata.io/talk/20420101_gopherdataconf</loc>
-      <lastmod>2042-01-01T00:00:00+00:00</lastmod>
-    </url>
+    </url>   
 
     <url>
       <loc>http://gopherdata.io/talk/20420101_gopherdataconf</loc>
       <lastmod>2042-01-01T00:00:00+00:00</lastmod>
     </url>
     
-  
-  
     <url>
       <loc>http://gopherdata.io/post/distributed_trump_finder</loc>
       <lastmod>2017-04-26T12:00:00+00:00</lastmod>
