@@ -11,12 +11,12 @@
     <atom:link href="talk/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>GopherData Conference</title>
-      <link>http://gopherdata.io/talk/gopherdata</link>
-      <pubDate>Wed, 01 Jan 2042 00:00:00 +0000</pubDate>
+      <title>GopherData Party</title>
+      <link>http://gopherdata.io/talk/20170715_gopherdataparty</link>
+      <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://gopherdata.io/talk/gopherdata</guid>
-      <description>&lt;p&gt;More details, actual dates (hopefully sooner than 2042), and details coming soon!&lt;/p&gt;
+      <guid>http://gopherdata.io/talk/20170715_gopherdataparty</guid>
+      <description>&lt;p&gt;we are organizing a community day room focused on the ever growing Go data science, numerical computing, data, etc. community, GopherData, along with some of the major Go projects in those areas!&lt;/p&gt;
 </description>
     </item>
     
