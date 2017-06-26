@@ -9,13 +9,33 @@
     <copyright>&amp;copy; 2017 GopherData</copyright>
     <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="index.xml" rel="self" type="application/rss+xml" />
-    
+
+    <item>
+      <title>GopherData Party</title>
+      <link>http://gopherdata.io/talk/20170715_gopherdataparty</link>
+      <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://gopherdata.io/talk/20170715_gopherdataparty</guid>
+      <description>&lt;p&gt;In this spirit, we are organizing a community day room focused on the ever growing Go data science, numerical computing, data, etc. community, GopherData, along with some of the major Go projects in those areas!&lt;/p&gt;
+</description>
+    </item>
+
+    <item>
+      <title>GopherData Workshop</title>
+      <link>http://gopherdata.io/talk/20170615_gopherdataworkshop</link>
+      <pubDate>Thur, 15 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://gopherdata.io/talk/20170615_gopherdataworkshop</guid>
+      <description>&lt;p&gt;In this spirit, we are organizing a community day room focused on the ever growing Go data science, numerical computing, data, etc. community, GopherData, along with some of the major Go projects in those areas!&lt;/p&gt;
+</description>
+    </item>
+
     <item>
       <title>GopherData Conference</title>
-      <link>http://gopherdata.io/talk/gopherdata</link>
+      <link>http://gopherdata.io/talk/20420101_gopherdataconf</link>
       <pubDate>Wed, 01 Jan 2042 00:00:00 +0000</pubDate>
       
-      <guid>http://gopherdata.io/talk/gopherdata</guid>
+      <guid>http://gopherdata.io/talk/20420101_gopherdataconf</guid>
       <description>&lt;p&gt;More details, actual dates (hopefully sooner than 2042), and details coming soon!&lt;/p&gt;
 </description>
     </item>
