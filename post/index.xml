@@ -2,20 +2,128 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on GopherData</title>
-    <link>http://gopherdata.io/post/index.xml</link>
+    <link>http://gopherdata.io/post/</link>
     <description>Recent content in Posts on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 GopherData</copyright>
     <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/post/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Building an ML-Powered Game AI using TensorFlow in Go</title>
+      <link>http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/</link>
+      <pubDate>Thu, 10 Aug 2017 08:43:45 +1000</pubDate>
+      
+      <guid>http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/</guid>
+      <description>
+
+&lt;p&gt;&lt;em&gt;Based on a lightning talk given at GopherCon 2017 &amp;ldquo;Building an ML-Powered Game AI using TensorFlow in Go&amp;rdquo; &lt;a href=&#34;https://www.youtube.com/watch?v=oiorteQg9n0&amp;amp;t=53s&#34; target=&#34;_blank&#34;&gt;Video&lt;/a&gt; / &lt;a href=&#34;https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow&#34; target=&#34;_blank&#34;&gt;Slides&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;(Author: Pete Garcin, Developer Advocate @ ActiveState, @rawktron on &lt;a href=&#34;https://twitter.com/rawktron&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and @peteg on Gophers Slack)&lt;/p&gt;
+
+&lt;p&gt;For GopherCon, we wanted to demonstrate some of the capabilities of the emerging machine learning and data science ecosystem in Go. Originally built as a demo for PyCon, I had put together a simple arcade space shooter game that features enemies powered by machine learning. It was a fun way to get folks engaged at conferences and to learn about the growing library of tools that are available. It also gave me an opportunity to build something non-trivial using machine learning techniques, and my background in games made this kind of interactive demo a good fit.&lt;/p&gt;
+
+&lt;p&gt;NeuroBlast is a vertically scrolling space shooter where you control a ship that tries to defeat increasing waves of enemies. Normally, these enemies fly in predefined formations, with predefined firing patterns, and come in waves. The big difference in NeuroBlast is that the enemies use machine learning to determine what their firing pattern should be.&lt;/p&gt;
+
+&lt;h2 id=&#34;under-the-hood-tensorflow&#34;&gt;Under the Hood: TensorFlow&lt;/h2&gt;
+
+&lt;p&gt;Go is one of the languages that has a TensorFlow client available, and so it was a great opportunity to port the original Python game to Go and demonstrate that it’s also possible to deploy trained models in Go applications.&lt;/p&gt;
+
+&lt;p&gt;It is worth noting that the Go TensorFlow client currently does not support training models, and so we relied on a model that was previously trained using the Python version of the game and then exported using the &lt;code&gt;SavedModelBuilder&lt;/code&gt; functionality in order to load it in Go. This will export a TensorFlow graph as a protocol buffer and allow it to be loaded in Go using the &lt;code&gt;LoadSavedModel&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;p&gt;For the game portion, I used a library called &lt;a href=&#34;github.com/faiface/pixel&#34; target=&#34;_blank&#34;&gt;Pixel&lt;/a&gt; which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.&lt;/p&gt;
+
+&lt;h3 id=&#34;training-the-neural-net&#34;&gt;Training the Neural Net&lt;/h3&gt;
+
+&lt;p&gt;Our Neural Net is ultimately a very simple one &amp;ndash; four inputs and a single output neuron. It will use supervised learning to do binary classification on a simple problem: was each shot a hit or a miss? It utilizes the delta between player and enemy position, and player and enemy velocity as the inputs. The single output neuron will fire if its activation value is &amp;gt;= 0.5 and will not fire if it is &amp;lt; 0.5.&lt;/p&gt;
+
+&lt;p&gt;When building the network, I initially had only a single hidden layer with 4 nodes but found that after training it, it was somewhat erratic. It seemed like it was very sensitive to the training data and would not ‘settle’ on a particular strategy in any consistent way. I experimented with a few different configurations, and ultimately settled on the one we used for the demo. It’s quite likely not the optimal setup, and may have more layers than is necessary. What appealed to me though was that even with a very small amount of training data, and regardless of how you trained it, it would consistently settle into a similar behaviour pattern which made it great for a floor demo where anyone could play or train the game.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://gopherdata.io/img/gameai/NNViz.png&#34; alt=&#34;Neural Network Visualization&#34; title=&#34;Neural Net Visualization&#34; /&gt;
+&lt;em&gt;The inputs are the four nodes at the top, with the output node (primed to fire here) at the bottom. Thicker lines represent higher weights. Activation values appear in the node centers.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The visualization was cobbled together by myself to run using the Pixel immediate mode drawing functions. Inspired by &lt;a href=&#34;https://medium.com/deep-learning-101/how-to-generate-a-video-of-a-neural-network-learning-in-python-62f5c520e85c&#34; target=&#34;_blank&#34;&gt;this blog post&lt;/a&gt;, the visualization here shows connections between nodes as either red or green lines. Green lines indicate positive weights that will bias the network towards “shooting”, and red values inhibit shooting. Thicker lines indicate higher weight values and thus “stronger” connections.&lt;/p&gt;
+
+&lt;p&gt;After training, the network consistently seems to converge on the following strategy:&lt;/p&gt;
+
+&lt;p&gt;If the player is within a reasonable cone of forward “vision” then fire indiscriminately.
+If the player is not within that reasonable forward cone, then do not fire at all.&lt;/p&gt;
+
+&lt;p&gt;At first, it was very interesting to me that the network did not settle on the more obvious “just fire constantly” strategy, but given that it does receive training data that indicates that “misses” are undesirable, it makes sense that it would avoid firing shots with a low probability of hitting.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://gopherdata.io/img/gameai/GopherPos.png&#34; alt=&#34;Positive Network Output&#34; title=&#34;Positive Network Output&#34; /&gt;
+&lt;em&gt;In this image, notice that because I’m in a forward cone, most of the enemies are firing at my indiscriminately.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://gopherdata.io/img/gameai/GopherNeg.png&#34; alt=&#34;Negative Network Output&#34; title=&#34;Negative Network Output&#34; /&gt;
+&lt;em&gt;In this image, you’ll notice none of the enemies are firing because I am clearly outside their range of possible success. However, if you look at the activation values, you’ll see that the enemy who has just come onto the screen is about to blast me because his output is 0.83. Yikes!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In the training mode, the enemies fire randomly, and then each shot taken by the enemy is recorded as a hit or a miss along with its initial relative position/velocity values.&lt;/p&gt;
+
+&lt;p&gt;It’s worth noting that in early iterations of the game, I was passing in raw pixel values for positions and velocities. This meant that there was a really wide variation between the values in the input and I found that the network would just not really converge to a consistent behaviour. So, I normalized the input data to be roughly between 0.0-1.0 and found that it basically instantly converged to a usable behaviour. So, lesson for you kids: normalize your input data!&lt;/p&gt;
+
+&lt;p&gt;It&amp;rsquo;s also important that you make all your input values framerate independent since the model is being trained in Python, any discrepancies between either the co-ordinate space or velocity values when running in Go will result in getting incorrect results back from the network.&lt;/p&gt;
+
+&lt;p&gt;Once the network is trained, when you play the game, every instance of an enemy spaceship uses its own instance of the neural network to make decisions about when it should fire.&lt;/p&gt;
+
+&lt;h3 id=&#34;using-the-model-in-go&#34;&gt;Using the model in Go&lt;/h3&gt;
+
+&lt;p&gt;As mentioned above, we exported our model from Python using the SavedModelBuilder and then need to load this in Go. The &lt;code&gt;SavedModelBuilder&lt;/code&gt; will export the model into a folder, and you only need to specify that folder when loading in Go, along with the tag for your model. There are two available tags - TRAIN and SERVING. In our case, I used TRAIN but for deployment, it is suggested that you use the SERVING tag.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Go&#34;&gt;    // bundle contains Session + Graph
+    bundle, err := tf.LoadSavedModel(&amp;quot;exported_brain&amp;quot;, []string{&amp;quot;train&amp;quot;}, nil)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code will load your saved model and return a struct that contains pointers to the TensorFlow graph, and a new TensorFlow session that you can use for evaluation. However, at this stage many are left wondering - so, now what?&lt;/p&gt;
+
+&lt;p&gt;This is where current limitations in the Go binding and documentation show themselves. The key next step is to access the nodes in the TensorFlow graph for the input and output nodes. Right now, the only way to do this is to print the graph node names from Python when you are exporting. You do have the option of labelling nodes as you output them, but don&amp;rsquo;t have the ability to access those nodes by their labels from Go.&lt;/p&gt;
+
+&lt;p&gt;In this case, once we have the names of the nodes, we need to access them in Go via the &lt;code&gt;Operation&lt;/code&gt; method on the TensorFlow graph. Remember that because TensorFlow is storing our network as a series of computation operations, that&amp;rsquo;s why it is called &lt;code&gt;Operation&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Go&#34;&gt;    inputop := bundle.Graph.Operation(&amp;quot;dense_1_input&amp;quot;)
+    outputop := bundle.Graph.Operation(&amp;quot;dense_5/Sigmoid&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So now, we have both a Session with our Graph, and we have also found our input and output Operations, so now we&amp;rsquo;re ready to send data to the graph and use it to evaluate that data. In our case, since we&amp;rsquo;ve trained the graph using the relative position and velocity in the game, each frame, for each enemy we will take their relative position and velocity to the player and feed it into the network to get a decision back on whether or not we should fire at the player.&lt;/p&gt;
+
+&lt;p&gt;Our first step in having our enemies &amp;ldquo;think&amp;rdquo; is to build a new &amp;lsquo;Tensor&amp;rsquo; (which is like a vector) to feed into the network:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Go&#34;&gt;    var column *tf.Tensor
+    column, err = tf.NewTensor([1][4]float32{{dx, dy, du, dv}})
+    results, err := bundle.Session.Run(map[tf.Output]*tf.Tensor{inputop.Output(0): column}, []tf.Output{outputop.Output(0)}, nil)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What you see above is that we&amp;rsquo;re building a tensor from the relative position (dx, dy) and the relative velocity (du, dv) and then running our TensorFlow session, specifying which nodes are the input and output nodes. The session will then return the results in the form of an array. In our case, since we only have one output node, the array only has one entry.&lt;/p&gt;
+
+&lt;p&gt;Our enemies have almost made a decision - all we need to do is read the output value from their neuron. If value at the output node is greater than or equal to 0.5 we use that threshold to determine that we should fire at the player:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-Go&#34;&gt;    for _, result := range results {
+        if result.Value().([][]float32)[0][0] &amp;gt;= 0.5 &amp;amp;&amp;amp; enemy.canfire {
+           // FIRE!!
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that&amp;rsquo;s it! This is literally the only logic governing the attack behaviour of the enemies, and despite its simplicity, this network generates a compelling and interesting set of enemy behaviour. By applying this repeatedly to all enemies, we&amp;rsquo;ve been able to create an enemy AI for our game.&lt;/p&gt;
+
+&lt;p&gt;There are obviously lots of easy and obvious ways to improve this, and to make it more sophisticated - but as a demonstration of utilizing a model loaded at runtime in Go and &amp;lsquo;deployed&amp;rsquo; into our game - it demonstrates the ease and power of these techniques and how accessible the tools are making them.&lt;/p&gt;
+
+&lt;h2 id=&#34;next-steps&#34;&gt;Next Steps&lt;/h2&gt;
+
+&lt;p&gt;The Machine Learning and Data Science ecosystem in Go is growing, and there are lots of exciting opportunties to contribute to a wide variety of projects - including TensorFlow.&lt;/p&gt;
+
+&lt;p&gt;In the near future, I plan to push this to GitHub as I had a number of requests at both GopherCon and PyCon to do so and would love to see others learn from this project as well as help to develop and expand its capabilities.&lt;/p&gt;
+
+&lt;p&gt;If you want to ask questions about this project, feel free to hit me up on Twitter &lt;a href=&#34;https://twitter.com/rawktron&#34; target=&#34;_blank&#34;&gt;@rawktron&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Building a distributed Trump finder</title>
-      <link>http://gopherdata.io/post/distributed_trump_finder</link>
+      <link>http://gopherdata.io/post/distributed_trump_finder/</link>
       <pubDate>Wed, 26 Apr 2017 12:00:00 +0000</pubDate>
       
-      <guid>http://gopherdata.io/post/distributed_trump_finder</guid>
+      <guid>http://gopherdata.io/post/distributed_trump_finder/</guid>
       <description>&lt;p&gt;(Author: Daniel Whitenack, @dwhitena on &lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
 
 &lt;p&gt;If you haven&amp;rsquo;t heard, there is a new kid on the machine learning block named &lt;a href=&#34;https://machinebox.io/&#34; target=&#34;_blank&#34;&gt;Machine Box&lt;/a&gt;.  It&amp;rsquo;s pretty cool, and you should check it out.  Machine Box provides pre-built Docker images that enable easy, production ready, and reproducible machine learning operations.  For example, you can get a &amp;ldquo;facebox&amp;rdquo; Docker image from Machine Box for facial recognition. When you run &amp;ldquo;facebox,&amp;rdquo; you get a full JSON API that lets you to easily &amp;ldquo;teach&amp;rdquo; facebox certain people&amp;rsquo;s faces, identify those faces in images, and persist the &amp;ldquo;state&amp;rdquo; of trained facial recognition models.&lt;/p&gt;
@@ -61,7 +169,7 @@ trump1.jpg          file                78.98 KiB
 trump2.jpg          file                334.5 KiB           
 trump3.jpg          file                11.63 KiB           
 trump4.jpg          file                27.45 KiB           
-trump5.jpg          file                33.6 KiB 
+trump5.jpg          file                33.6 KiB
 ➔ cd ../../labels/
 ➔ ls
 clinton.jpg  trump.jpg
@@ -86,16 +194,16 @@ training            7 minutes ago       486.2 KiB
 &lt;p&gt;We are using a little bash magic here to perform these operations.  However, it is very possible that, in the future, Machine Box will provide a more standardized command line implementation for these sorts of use cases.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;create-MB-pipeline.sh  identify.json  tag.json  train.json
-➔ ./create-MB-pipeline.sh train.json 
+➔ ./create-MB-pipeline.sh train.json
 ➔ pachctl list-pipeline
 NAME                INPUT               OUTPUT              STATE               
 model               training            model/master        running    
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT STARTED       DURATION RESTART PROGRESS STATE            
-3425a7a0-543e-4e2a-a244-a3982c527248 model/-       9 seconds ago -        1       0 / 1    running 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/-       9 seconds ago -        1       0 / 1    running
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 5 minutes ago 5 minutes 1       1 / 1    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 5 minutes ago 5 minutes 1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED             SIZE                
 model               5 minutes ago       4.118 KiB           
@@ -113,15 +221,15 @@ state.facebox       file                4.118 KiB
 
 &lt;p&gt;We then launch another Pachyderm pipeline, based on an &lt;a href=&#34;https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/identify.json&#34; target=&#34;_blank&#34;&gt;identify.json&lt;/a&gt; pipeline specification, to identify faces within the &lt;code&gt;unidentified&lt;/code&gt; images.  This pipeline will take the persisted state of our model in &lt;code&gt;model&lt;/code&gt; along with the &lt;code&gt;unidentified&lt;/code&gt; images as input.  It will also execute cURL commands to interact with facebox, and it will output indications of identified faces to JSON files, one per &lt;code&gt;unidentified&lt;/code&gt; image.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;➔ ./create-MB-pipeline.sh identify.json 
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;➔ ./create-MB-pipeline.sh identify.json
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/-                             6 seconds ago -         0       0 / 2    running 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 8 minutes ago 5 minutes 1       1 / 1    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/-                             6 seconds ago -         0       0 / 2    running
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 8 minutes ago 5 minutes 1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 About a minute ago 53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    9 minutes ago      5 minutes  1       1 / 1    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 About a minute ago 53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    9 minutes ago      5 minutes  1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED              SIZE                
 identify            About a minute ago   1.932 KiB           
@@ -166,17 +274,17 @@ image2.json         file                347 B
 
 &lt;p&gt;To do this, we can use a &lt;a href=&#34;https://github.com/dwhitena/pach-machine-box/blob/master/tagimage/main.go&#34; target=&#34;_blank&#34;&gt;simple Go program&lt;/a&gt; to draw the label image on the &lt;code&gt;unidentified&lt;/code&gt; image at the appropriate location.  This part of the pipeline is specified by a &lt;a href=&#34;https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/tag.json&#34; target=&#34;_blank&#34;&gt;tag.json&lt;/a&gt; pipeline specification, and can be created as follows:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;➔ pachctl create-pipeline -f tag.json 
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;➔ pachctl create-pipeline -f tag.json
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/-                                     2 seconds ago  -          0       0 / 2    running 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    13 minutes ago 5 minutes  1       1 / 1    success 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/-                                     2 seconds ago  -          0       0 / 2    running
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    13 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      25 seconds ago 11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    14 minutes ago 5 minutes  1       1 / 1    success 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      25 seconds ago 11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    14 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED             SIZE                
 tag                 30 seconds ago      591.3 KiB           
@@ -195,9 +303,9 @@ tagged_image2.jpg   file                34.35 KiB
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images1.jpg&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Teaching a new faces, updating the output&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Teaching a new face, updating the output&lt;/strong&gt;:&lt;/p&gt;
 
-&lt;p&gt;Our pipeline isn&amp;rsquo;t restricted to Trump or any one face.  Actually, we can teach facebox another face by updating our &lt;code&gt;training&lt;/code&gt;.  Moreover, becauce Pachyderm verions your data and know what data is new, it can automatically update all our results once facebox learns the new face:&lt;/p&gt;
+&lt;p&gt;Our pipeline isn&amp;rsquo;t restricted to Trump or any one face.  Actually, we can teach facebox another face by updating our &lt;code&gt;training&lt;/code&gt;.  Moreover, because Pachyderm versions your data and knows what data is new, it can automatically update all our results once facebox learns the new face:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;➔ cd ../data/train/faces2/
 ➔ ls
@@ -205,25 +313,25 @@ clinton1.jpg  clinton2.jpg  clinton3.jpg  clinton4.jpg
 ➔ pachctl put-file training master -c -r -f .
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-56e24ac0-0430-4fa4-aa8b-08de5c1884db model/-                                   4 seconds ago  -          0       0 / 1    running 
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      6 minutes ago  11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 11 minutes ago 53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    20 minutes ago 5 minutes  1       1 / 1    success 
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/-                                   4 seconds ago  -          0       0 / 1    running
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      6 minutes ago  11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 11 minutes ago 53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    20 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
-6aa6c995-58ce-445d-999a-eb0e0690b041 tag/7cbd2584d4f0472abbca0d9e015b9829      5 seconds ago      1 seconds  0       2 / 2    success 
-8a7961b7-1085-404a-b0ee-66034fae7212 identify/1bc94ec558e44e0cb45ed5ab7d9f9674 59 seconds ago     54 seconds 0       2 / 2    success 
-56e24ac0-0430-4fa4-aa8b-08de5c1884db model/002f16b63a4345a4bc6bdf5510c9faac    About a minute ago 19 seconds 0       1 / 1    success 
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      8 minutes ago      11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 13 minutes ago     53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    21 minutes ago     5 minutes  1       1 / 1    success 
+6aa6c995-58ce-445d-999a-eb0e0690b041 tag/7cbd2584d4f0472abbca0d9e015b9829      5 seconds ago      1 seconds  0       2 / 2    success
+8a7961b7-1085-404a-b0ee-66034fae7212 identify/1bc94ec558e44e0cb45ed5ab7d9f9674 59 seconds ago     54 seconds 0       2 / 2    success
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/002f16b63a4345a4bc6bdf5510c9faac    About a minute ago 19 seconds 0       1 / 1    success
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      8 minutes ago      11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 13 minutes ago     53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    21 minutes ago     5 minutes  1       1 / 1    success
 ➔ pachctl list-file tag master
 NAME                TYPE                SIZE                
 tagged_image1.jpg   file                557 KiB             
 tagged_image2.jpg   file                36.03 KiB
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Now if we look at our images, we find that everything has been updated without any annoying manual work on our end:&lt;/p&gt;
+&lt;p&gt;Now if we look at our images, we find that everything has been updated without any annoying manual work on our hands:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images2.jpg&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
 
@@ -243,10 +351,10 @@ tagged_image2.jpg   file                36.03 KiB
     
     <item>
       <title>Deep Learning from Scratch in Go - Part 1: Equations Are Graphs</title>
-      <link>http://gopherdata.io/post/deeplearning_in_go_part_1</link>
+      <link>http://gopherdata.io/post/deeplearning_in_go_part_1/</link>
       <pubDate>Wed, 19 Apr 2017 08:43:45 +1000</pubDate>
       
-      <guid>http://gopherdata.io/post/deeplearning_in_go_part_1</guid>
+      <guid>http://gopherdata.io/post/deeplearning_in_go_part_1/</guid>
       <description>
 
 &lt;p&gt;(Author: Chewxy, @chewxy on &lt;a href=&#34;https://twitter.com/chewxy&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
@@ -643,10 +751,10 @@ tagged_image2.jpg   file                36.03 KiB
     
     <item>
       <title>Welcome to GopherData</title>
-      <link>http://gopherdata.io/post/introduction_to_gopherdata</link>
+      <link>http://gopherdata.io/post/introduction_to_gopherdata/</link>
       <pubDate>Sat, 11 Mar 2017 12:00:00 +0000</pubDate>
       
-      <guid>http://gopherdata.io/post/introduction_to_gopherdata</guid>
+      <guid>http://gopherdata.io/post/introduction_to_gopherdata/</guid>
       <description>&lt;p&gt;(Author: Daniel Whitenack, @dwhitena on &lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and Gophers Slack)&lt;/p&gt;
 
 &lt;p&gt;Welcome to GopherData!  This site/organization intends to be a place for all Gophers (i.e., go programmers) doing data analysis, science, numerical computing, or anything else data/math related.  It&amp;rsquo;s also a place where non-Gophers can learn about doing these things in Go. The site to will serve as a hub of info about related events and an eventual GopherData conference.&lt;/p&gt;

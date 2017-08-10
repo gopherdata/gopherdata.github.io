@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.27-DEV" />
+  <meta name="author" content="GopherData">
+  <meta name="description" content="Users and developers of Go data processing, analytics, and visualization tools.">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/highlight.min.css">
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  
+
+  <link rel="alternate" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+  <link rel="feed" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/">
+
+  
+
+  <title>Building an ML-Powered Game AI using TensorFlow in Go | GopherData</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">GopherData</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#talks">
+            
+            <span>Events</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="http://github.com/gopherdata/resources">
+            
+            <span>Resources</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Building an ML-Powered Game AI using TensorFlow in Go</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-08-10 08:43:45 &#43;1000 &#43;1000" itemprop="datePublished">
+      Thu, Aug 10, 2017
+    </time>
+  </span>
+
+  
+
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fbuild_ml_powered_game_ai_tensorflow%2f"
+         target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Building%20an%20ML-Powered%20Game%20AI%20using%20TensorFlow%20in%20Go&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fbuild_ml_powered_game_ai_tensorflow%2f"
+         target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fbuild_ml_powered_game_ai_tensorflow%2f&amp;title=Building%20an%20ML-Powered%20Game%20AI%20using%20TensorFlow%20in%20Go"
+         target="_blank">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fbuild_ml_powered_game_ai_tensorflow%2f&amp;title=Building%20an%20ML-Powered%20Game%20AI%20using%20TensorFlow%20in%20Go"
+         target="_blank">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Building%20an%20ML-Powered%20Game%20AI%20using%20TensorFlow%20in%20Go&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fbuild_ml_powered_game_ai_tensorflow%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p><em>Based on a lightning talk given at GopherCon 2017 &ldquo;Building an ML-Powered Game AI using TensorFlow in Go&rdquo; <a href="https://www.youtube.com/watch?v=oiorteQg9n0&amp;t=53s" target="_blank">Video</a> / <a href="https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow" target="_blank">Slides</a></em></p>
+
+<p>(Author: Pete Garcin, Developer Advocate @ ActiveState, @rawktron on <a href="https://twitter.com/rawktron" target="_blank">Twitter</a> and @peteg on Gophers Slack)</p>
+
+<p>For GopherCon, we wanted to demonstrate some of the capabilities of the emerging machine learning and data science ecosystem in Go. Originally built as a demo for PyCon, I had put together a simple arcade space shooter game that features enemies powered by machine learning. It was a fun way to get folks engaged at conferences and to learn about the growing library of tools that are available. It also gave me an opportunity to build something non-trivial using machine learning techniques, and my background in games made this kind of interactive demo a good fit.</p>
+
+<p>NeuroBlast is a vertically scrolling space shooter where you control a ship that tries to defeat increasing waves of enemies. Normally, these enemies fly in predefined formations, with predefined firing patterns, and come in waves. The big difference in NeuroBlast is that the enemies use machine learning to determine what their firing pattern should be.</p>
+
+<h2 id="under-the-hood-tensorflow">Under the Hood: TensorFlow</h2>
+
+<p>Go is one of the languages that has a TensorFlow client available, and so it was a great opportunity to port the original Python game to Go and demonstrate that it’s also possible to deploy trained models in Go applications.</p>
+
+<p>It is worth noting that the Go TensorFlow client currently does not support training models, and so we relied on a model that was previously trained using the Python version of the game and then exported using the <code>SavedModelBuilder</code> functionality in order to load it in Go. This will export a TensorFlow graph as a protocol buffer and allow it to be loaded in Go using the <code>LoadSavedModel</code> function.</p>
+
+<p>For the game portion, I used a library called <a href="github.com/faiface/pixel" target="_blank">Pixel</a> which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.</p>
+
+<h3 id="training-the-neural-net">Training the Neural Net</h3>
+
+<p>Our Neural Net is ultimately a very simple one &ndash; four inputs and a single output neuron. It will use supervised learning to do binary classification on a simple problem: was each shot a hit or a miss? It utilizes the delta between player and enemy position, and player and enemy velocity as the inputs. The single output neuron will fire if its activation value is &gt;= 0.5 and will not fire if it is &lt; 0.5.</p>
+
+<p>When building the network, I initially had only a single hidden layer with 4 nodes but found that after training it, it was somewhat erratic. It seemed like it was very sensitive to the training data and would not ‘settle’ on a particular strategy in any consistent way. I experimented with a few different configurations, and ultimately settled on the one we used for the demo. It’s quite likely not the optimal setup, and may have more layers than is necessary. What appealed to me though was that even with a very small amount of training data, and regardless of how you trained it, it would consistently settle into a similar behaviour pattern which made it great for a floor demo where anyone could play or train the game.</p>
+
+<p><img src="/img/gameai/NNViz.png" alt="Neural Network Visualization" title="Neural Net Visualization" />
+<em>The inputs are the four nodes at the top, with the output node (primed to fire here) at the bottom. Thicker lines represent higher weights. Activation values appear in the node centers.</em></p>
+
+<p>The visualization was cobbled together by myself to run using the Pixel immediate mode drawing functions. Inspired by <a href="https://medium.com/deep-learning-101/how-to-generate-a-video-of-a-neural-network-learning-in-python-62f5c520e85c" target="_blank">this blog post</a>, the visualization here shows connections between nodes as either red or green lines. Green lines indicate positive weights that will bias the network towards “shooting”, and red values inhibit shooting. Thicker lines indicate higher weight values and thus “stronger” connections.</p>
+
+<p>After training, the network consistently seems to converge on the following strategy:</p>
+
+<p>If the player is within a reasonable cone of forward “vision” then fire indiscriminately.
+If the player is not within that reasonable forward cone, then do not fire at all.</p>
+
+<p>At first, it was very interesting to me that the network did not settle on the more obvious “just fire constantly” strategy, but given that it does receive training data that indicates that “misses” are undesirable, it makes sense that it would avoid firing shots with a low probability of hitting.</p>
+
+<p><img src="/img/gameai/GopherPos.png" alt="Positive Network Output" title="Positive Network Output" />
+<em>In this image, notice that because I’m in a forward cone, most of the enemies are firing at my indiscriminately.</em></p>
+
+<p><img src="/img/gameai/GopherNeg.png" alt="Negative Network Output" title="Negative Network Output" />
+<em>In this image, you’ll notice none of the enemies are firing because I am clearly outside their range of possible success. However, if you look at the activation values, you’ll see that the enemy who has just come onto the screen is about to blast me because his output is 0.83. Yikes!</em></p>
+
+<p>In the training mode, the enemies fire randomly, and then each shot taken by the enemy is recorded as a hit or a miss along with its initial relative position/velocity values.</p>
+
+<p>It’s worth noting that in early iterations of the game, I was passing in raw pixel values for positions and velocities. This meant that there was a really wide variation between the values in the input and I found that the network would just not really converge to a consistent behaviour. So, I normalized the input data to be roughly between 0.0-1.0 and found that it basically instantly converged to a usable behaviour. So, lesson for you kids: normalize your input data!</p>
+
+<p>It&rsquo;s also important that you make all your input values framerate independent since the model is being trained in Python, any discrepancies between either the co-ordinate space or velocity values when running in Go will result in getting incorrect results back from the network.</p>
+
+<p>Once the network is trained, when you play the game, every instance of an enemy spaceship uses its own instance of the neural network to make decisions about when it should fire.</p>
+
+<h3 id="using-the-model-in-go">Using the model in Go</h3>
+
+<p>As mentioned above, we exported our model from Python using the SavedModelBuilder and then need to load this in Go. The <code>SavedModelBuilder</code> will export the model into a folder, and you only need to specify that folder when loading in Go, along with the tag for your model. There are two available tags - TRAIN and SERVING. In our case, I used TRAIN but for deployment, it is suggested that you use the SERVING tag.</p>
+
+<pre><code class="language-Go">    // bundle contains Session + Graph
+    bundle, err := tf.LoadSavedModel(&quot;exported_brain&quot;, []string{&quot;train&quot;}, nil)
+</code></pre>
+
+<p>This code will load your saved model and return a struct that contains pointers to the TensorFlow graph, and a new TensorFlow session that you can use for evaluation. However, at this stage many are left wondering - so, now what?</p>
+
+<p>This is where current limitations in the Go binding and documentation show themselves. The key next step is to access the nodes in the TensorFlow graph for the input and output nodes. Right now, the only way to do this is to print the graph node names from Python when you are exporting. You do have the option of labelling nodes as you output them, but don&rsquo;t have the ability to access those nodes by their labels from Go.</p>
+
+<p>In this case, once we have the names of the nodes, we need to access them in Go via the <code>Operation</code> method on the TensorFlow graph. Remember that because TensorFlow is storing our network as a series of computation operations, that&rsquo;s why it is called <code>Operation</code>.</p>
+
+<pre><code class="language-Go">    inputop := bundle.Graph.Operation(&quot;dense_1_input&quot;)
+    outputop := bundle.Graph.Operation(&quot;dense_5/Sigmoid&quot;)
+</code></pre>
+
+<p>So now, we have both a Session with our Graph, and we have also found our input and output Operations, so now we&rsquo;re ready to send data to the graph and use it to evaluate that data. In our case, since we&rsquo;ve trained the graph using the relative position and velocity in the game, each frame, for each enemy we will take their relative position and velocity to the player and feed it into the network to get a decision back on whether or not we should fire at the player.</p>
+
+<p>Our first step in having our enemies &ldquo;think&rdquo; is to build a new &lsquo;Tensor&rsquo; (which is like a vector) to feed into the network:</p>
+
+<pre><code class="language-Go">    var column *tf.Tensor
+    column, err = tf.NewTensor([1][4]float32{{dx, dy, du, dv}})
+    results, err := bundle.Session.Run(map[tf.Output]*tf.Tensor{inputop.Output(0): column}, []tf.Output{outputop.Output(0)}, nil)
+</code></pre>
+
+<p>What you see above is that we&rsquo;re building a tensor from the relative position (dx, dy) and the relative velocity (du, dv) and then running our TensorFlow session, specifying which nodes are the input and output nodes. The session will then return the results in the form of an array. In our case, since we only have one output node, the array only has one entry.</p>
+
+<p>Our enemies have almost made a decision - all we need to do is read the output value from their neuron. If value at the output node is greater than or equal to 0.5 we use that threshold to determine that we should fire at the player:</p>
+
+<pre><code class="language-Go">    for _, result := range results {
+        if result.Value().([][]float32)[0][0] &gt;= 0.5 &amp;&amp; enemy.canfire {
+           // FIRE!!
+        }
+    }
+</code></pre>
+
+<p>And that&rsquo;s it! This is literally the only logic governing the attack behaviour of the enemies, and despite its simplicity, this network generates a compelling and interesting set of enemy behaviour. By applying this repeatedly to all enemies, we&rsquo;ve been able to create an enemy AI for our game.</p>
+
+<p>There are obviously lots of easy and obvious ways to improve this, and to make it more sophisticated - but as a demonstration of utilizing a model loaded at runtime in Go and &lsquo;deployed&rsquo; into our game - it demonstrates the ease and power of these techniques and how accessible the tools are making them.</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>The Machine Learning and Data Science ecosystem in Go is growing, and there are lots of exciting opportunties to contribute to a wide variety of projects - including TensorFlow.</p>
+
+<p>In the near future, I plan to push this to GitHub as I had a number of requests at both GopherCon and PyCon to do so and would love to see others learn from this project as well as help to develop and expand its capabilities.</p>
+
+<p>If you want to ask questions about this project, feel free to hit me up on Twitter <a href="https://twitter.com/rawktron" target="_blank">@rawktron</a>.</p>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+    <li class="previous"><a href="http://gopherdata.io/post/distributed_trump_finder/"><span
+      aria-hidden="true">&larr;</span> Building a distributed Trump finder</a></li>
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2017 GopherData &middot; 
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+
+  </body>
+</html>
+

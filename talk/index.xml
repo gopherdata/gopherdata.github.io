@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent &amp; Upcoming Events on GopherData</title>
-    <link>http://gopherdata.io/talk/index.xml</link>
+    <link>http://gopherdata.io/talk/</link>
     <description>Recent content in Recent &amp; Upcoming Events on GopherData</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2017 GopherData</copyright>
     <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="talk/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/talk/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>GopherData Party</title>
-      <link>http://gopherdata.io/talk/20170715_gopherdataparty</link>
-      <pubDate>Sat, 15 Jul 2017 00:00:00 +0000</pubDate>
+      <title>GopherData Conference</title>
+      <link>http://gopherdata.io/talk/gopherdata/</link>
+      <pubDate>Wed, 01 Jan 2042 00:00:00 +0000</pubDate>
       
-      <guid>http://gopherdata.io/talk/20170715_gopherdataparty</guid>
-      <description>&lt;p&gt;we are organizing a community day room focused on the ever growing Go data science, numerical computing, data, etc. community, GopherData, along with some of the major Go projects in those areas!&lt;/p&gt;
+      <guid>http://gopherdata.io/talk/gopherdata/</guid>
+      <description>&lt;p&gt;More details, actual dates (hopefully sooner than 2042), and details coming soon!&lt;/p&gt;
 </description>
     </item>
     

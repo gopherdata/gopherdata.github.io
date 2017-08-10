@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.20-DEV" />
+  <meta name="generator" content="Hugo 0.27-DEV" />
   <meta name="author" content="GopherData">
   <meta name="description" content="Users and developers of Go data processing, analytics, and visualization tools.">
 
@@ -21,11 +21,16 @@
     <link rel="stylesheet" href="/css/highlight.min.css">
     
   
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/css/academicons.min.css">
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700|Merriweather|Roboto+Mono">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
   <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
   
 
   <link rel="alternate" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
@@ -34,7 +39,7 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
 
-  <link rel="canonical" href="http://gopherdata.io/post/distributed_trump_finder">
+  <link rel="canonical" href="http://gopherdata.io/post/distributed_trump_finder/">
 
   
 
@@ -112,6 +117,8 @@
 
         
         
+
+        
       </ul>
 
     </div>
@@ -122,11 +129,12 @@
 <article class="article" itemscope itemtype="http://schema.org/Article">
 
   
-  <div class="article-header">
-    <img src="/img//headers/trump_finder.jpg" class="article-banner" itemprop="image">
-    
-  </div>
+<div class="article-header">
+  <img src="/img/headers/trump_finder.jpg" class="article-banner" itemprop="image">
   
+</div>
+
+
 
   <div class="article-container">
     <h1 itemprop="name">Building a distributed Trump finder</h1>
@@ -164,35 +172,35 @@
   <ul class="share">
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder"
+         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder%2f"
          target="_blank">
         <i class="fa fa-facebook"></i>
       </a>
     </li>
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Building%20a%20distributed%20Trump%20finder&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder"
+         href="https://twitter.com/intent/tweet?text=Building%20a%20distributed%20Trump%20finder&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder%2f"
          target="_blank">
         <i class="fa fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder&amp;title=Building%20a%20distributed%20Trump%20finder"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder%2f&amp;title=Building%20a%20distributed%20Trump%20finder"
          target="_blank">
         <i class="fa fa-linkedin"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder&amp;title=Building%20a%20distributed%20Trump%20finder"
+         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder%2f&amp;title=Building%20a%20distributed%20Trump%20finder"
          target="_blank">
         <i class="fa fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Building%20a%20distributed%20Trump%20finder&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder">
+         href="mailto:?subject=Building%20a%20distributed%20Trump%20finder&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fdistributed_trump_finder%2f">
         <i class="fa fa-envelope"></i>
       </a>
     </li>
@@ -250,7 +258,7 @@ trump1.jpg          file                78.98 KiB
 trump2.jpg          file                334.5 KiB           
 trump3.jpg          file                11.63 KiB           
 trump4.jpg          file                27.45 KiB           
-trump5.jpg          file                33.6 KiB 
+trump5.jpg          file                33.6 KiB
 ➔ cd ../../labels/
 ➔ ls
 clinton.jpg  trump.jpg
@@ -275,16 +283,16 @@ training            7 minutes ago       486.2 KiB
 <p>We are using a little bash magic here to perform these operations.  However, it is very possible that, in the future, Machine Box will provide a more standardized command line implementation for these sorts of use cases.</p>
 
 <pre><code class="language-sh">create-MB-pipeline.sh  identify.json  tag.json  train.json
-➔ ./create-MB-pipeline.sh train.json 
+➔ ./create-MB-pipeline.sh train.json
 ➔ pachctl list-pipeline
 NAME                INPUT               OUTPUT              STATE               
 model               training            model/master        running    
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT STARTED       DURATION RESTART PROGRESS STATE            
-3425a7a0-543e-4e2a-a244-a3982c527248 model/-       9 seconds ago -        1       0 / 1    running 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/-       9 seconds ago -        1       0 / 1    running
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 5 minutes ago 5 minutes 1       1 / 1    success 
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 5 minutes ago 5 minutes 1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED             SIZE                
 model               5 minutes ago       4.118 KiB           
@@ -302,15 +310,15 @@ state.facebox       file                4.118 KiB
 
 <p>We then launch another Pachyderm pipeline, based on an <a href="https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/identify.json" target="_blank">identify.json</a> pipeline specification, to identify faces within the <code>unidentified</code> images.  This pipeline will take the persisted state of our model in <code>model</code> along with the <code>unidentified</code> images as input.  It will also execute cURL commands to interact with facebox, and it will output indications of identified faces to JSON files, one per <code>unidentified</code> image.</p>
 
-<pre><code class="language-sh">➔ ./create-MB-pipeline.sh identify.json 
+<pre><code class="language-sh">➔ ./create-MB-pipeline.sh identify.json
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                          STARTED       DURATION  RESTART PROGRESS STATE            
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/-                             6 seconds ago -         0       0 / 2    running 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 8 minutes ago 5 minutes 1       1 / 1    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/-                             6 seconds ago -         0       0 / 2    running
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a 8 minutes ago 5 minutes 1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 About a minute ago 53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    9 minutes ago      5 minutes  1       1 / 1    success 
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 About a minute ago 53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    9 minutes ago      5 minutes  1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED              SIZE                
 identify            About a minute ago   1.932 KiB           
@@ -355,17 +363,17 @@ image2.json         file                347 B
 
 <p>To do this, we can use a <a href="https://github.com/dwhitena/pach-machine-box/blob/master/tagimage/main.go" target="_blank">simple Go program</a> to draw the label image on the <code>unidentified</code> image at the appropriate location.  This part of the pipeline is specified by a <a href="https://github.com/dwhitena/pach-machine-box/blob/master/pipelines/tag.json" target="_blank">tag.json</a> pipeline specification, and can be created as follows:</p>
 
-<pre><code class="language-sh">➔ pachctl create-pipeline -f tag.json 
+<pre><code class="language-sh">➔ pachctl create-pipeline -f tag.json
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/-                                     2 seconds ago  -          0       0 / 2    running 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    13 minutes ago 5 minutes  1       1 / 1    success 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/-                                     2 seconds ago  -          0       0 / 2    running
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    13 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      25 seconds ago 11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    14 minutes ago 5 minutes  1       1 / 1    success 
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      25 seconds ago 11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 5 minutes ago  53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    14 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-repo
 NAME                CREATED             SIZE                
 tag                 30 seconds ago      591.3 KiB           
@@ -384,9 +392,9 @@ tagged_image2.jpg   file                34.35 KiB
 
 <p><img src="https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images1.jpg" alt="alt text" /></p>
 
-<p><strong>Teaching a new faces, updating the output</strong>:</p>
+<p><strong>Teaching a new face, updating the output</strong>:</p>
 
-<p>Our pipeline isn&rsquo;t restricted to Trump or any one face.  Actually, we can teach facebox another face by updating our <code>training</code>.  Moreover, becauce Pachyderm verions your data and know what data is new, it can automatically update all our results once facebox learns the new face:</p>
+<p>Our pipeline isn&rsquo;t restricted to Trump or any one face.  Actually, we can teach facebox another face by updating our <code>training</code>.  Moreover, because Pachyderm versions your data and knows what data is new, it can automatically update all our results once facebox learns the new face:</p>
 
 <pre><code class="language-sh">➔ cd ../data/train/faces2/
 ➔ ls
@@ -394,25 +402,25 @@ clinton1.jpg  clinton2.jpg  clinton3.jpg  clinton4.jpg
 ➔ pachctl put-file training master -c -r -f .
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED        DURATION   RESTART PROGRESS STATE            
-56e24ac0-0430-4fa4-aa8b-08de5c1884db model/-                                   4 seconds ago  -          0       0 / 1    running 
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      6 minutes ago  11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 11 minutes ago 53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    20 minutes ago 5 minutes  1       1 / 1    success 
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/-                                   4 seconds ago  -          0       0 / 1    running
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      6 minutes ago  11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 11 minutes ago 53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    20 minutes ago 5 minutes  1       1 / 1    success
 ➔ pachctl list-job
 ID                                   OUTPUT COMMIT                             STARTED            DURATION   RESTART PROGRESS STATE            
-6aa6c995-58ce-445d-999a-eb0e0690b041 tag/7cbd2584d4f0472abbca0d9e015b9829      5 seconds ago      1 seconds  0       2 / 2    success 
-8a7961b7-1085-404a-b0ee-66034fae7212 identify/1bc94ec558e44e0cb45ed5ab7d9f9674 59 seconds ago     54 seconds 0       2 / 2    success 
-56e24ac0-0430-4fa4-aa8b-08de5c1884db model/002f16b63a4345a4bc6bdf5510c9faac    About a minute ago 19 seconds 0       1 / 1    success 
-cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      8 minutes ago      11 seconds 0       2 / 2    success 
-281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 13 minutes ago     53 seconds 0       2 / 2    success 
-3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    21 minutes ago     5 minutes  1       1 / 1    success 
+6aa6c995-58ce-445d-999a-eb0e0690b041 tag/7cbd2584d4f0472abbca0d9e015b9829      5 seconds ago      1 seconds  0       2 / 2    success
+8a7961b7-1085-404a-b0ee-66034fae7212 identify/1bc94ec558e44e0cb45ed5ab7d9f9674 59 seconds ago     54 seconds 0       2 / 2    success
+56e24ac0-0430-4fa4-aa8b-08de5c1884db model/002f16b63a4345a4bc6bdf5510c9faac    About a minute ago 19 seconds 0       1 / 1    success
+cd284a28-6c97-4236-9f6d-717346c60f24 tag/ae747e8032704b6cae6ae7bba064c3c3      8 minutes ago      11 seconds 0       2 / 2    success
+281d4393-05c8-44bf-b5de-231cea0fc022 identify/287fc78a4cdf42d89142d46fb5f689d9 13 minutes ago     53 seconds 0       2 / 2    success
+3425a7a0-543e-4e2a-a244-a3982c527248 model/1b9c158e33394056a18041a4a86cb54a    21 minutes ago     5 minutes  1       1 / 1    success
 ➔ pachctl list-file tag master
 NAME                TYPE                SIZE                
 tagged_image1.jpg   file                557 KiB             
 tagged_image2.jpg   file                36.03 KiB
 </code></pre>
 
-<p>Now if we look at our images, we find that everything has been updated without any annoying manual work on our end:</p>
+<p>Now if we look at our images, we find that everything has been updated without any annoying manual work on our hands:</p>
 
 <p><img src="https://raw.githubusercontent.com/dwhitena/pach-machine-box/master/tagged_images2.jpg" alt="alt text" /></p>
 
@@ -437,10 +445,13 @@ tagged_image2.jpg   file                36.03 KiB
   <nav>
   <ul class="pager">
     
-    <li class="previous"><a href="http://gopherdata.io/post/deeplearning_in_go_part_1"><span
+    <li class="previous"><a href="http://gopherdata.io/post/deeplearning_in_go_part_1/"><span
       aria-hidden="true">&larr;</span> Deep Learning from Scratch in Go - Part 1: Equations Are Graphs</a></li>
     
 
+    
+    <li class="next"><a href="http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/">Building an ML-Powered Game AI using TensorFlow in Go <span
+      aria-hidden="true">&rarr;</span></a></li>
     
   </ul>
 </nav>
@@ -473,15 +484,15 @@ tagged_image2.jpg   file                36.03 KiB
   </div>
 </footer>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-    <script src="/js/jquery-1.12.3.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/isotope.pkgd.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
-    <script src="/js/hugo-academic.js"></script>
     
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
     
 
     
