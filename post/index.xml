@@ -18,9 +18,9 @@
       <guid>http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/</guid>
       <description>
 
-&lt;p&gt;&lt;em&gt;Based on a lightning talk given at GopherCon 2017 &amp;ldquo;Building an ML-Powered Game AI using TensorFlow in Go&amp;rdquo; &lt;a href=&#34;https://www.youtube.com/watch?v=oiorteQg9n0&amp;amp;t=53s&#34; target=&#34;_blank&#34;&gt;Video&lt;/a&gt; / &lt;a href=&#34;https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow&#34; target=&#34;_blank&#34;&gt;Slides&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Based on a lightning talk given at GopherCon 2017 &amp;ldquo;Building an ML-Powered Game AI using TensorFlow in Go&amp;rdquo; &lt;a href=&#34;https://www.youtube.com/watch?v=oiorteQg9n0&#34; target=&#34;_blank&#34;&gt;Video&lt;/a&gt; / &lt;a href=&#34;https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow&#34; target=&#34;_blank&#34;&gt;Slides&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;(Author: Pete Garcin, Developer Advocate @ ActiveState, @rawktron on &lt;a href=&#34;https://twitter.com/rawktron&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and @peteg on Gophers Slack)&lt;/p&gt;
+&lt;p&gt;(Author: Pete Garcin, Developer Advocate @ &lt;a href=&#34;https://activestate.com&#34; target=&#34;_blank&#34;&gt;ActiveState&lt;/a&gt;, @rawktron on &lt;a href=&#34;https://twitter.com/rawktron&#34; target=&#34;_blank&#34;&gt;Twitter&lt;/a&gt; and @peteg on Gophers Slack)&lt;/p&gt;
 
 &lt;p&gt;For GopherCon, we wanted to demonstrate some of the capabilities of the emerging machine learning and data science ecosystem in Go. Originally built as a demo for PyCon, I had put together a simple arcade space shooter game that features enemies powered by machine learning. It was a fun way to get folks engaged at conferences and to learn about the growing library of tools that are available. It also gave me an opportunity to build something non-trivial using machine learning techniques, and my background in games made this kind of interactive demo a good fit.&lt;/p&gt;
 
@@ -32,7 +32,7 @@
 
 &lt;p&gt;It is worth noting that the Go TensorFlow client currently does not support training models, and so we relied on a model that was previously trained using the Python version of the game and then exported using the &lt;code&gt;SavedModelBuilder&lt;/code&gt; functionality in order to load it in Go. This will export a TensorFlow graph as a protocol buffer and allow it to be loaded in Go using the &lt;code&gt;LoadSavedModel&lt;/code&gt; function.&lt;/p&gt;
 
-&lt;p&gt;For the game portion, I used a library called &lt;a href=&#34;github.com/faiface/pixel&#34; target=&#34;_blank&#34;&gt;Pixel&lt;/a&gt; which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.&lt;/p&gt;
+&lt;p&gt;For the game portion, I used a library called &lt;a href=&#34;https://github.com/faiface/pixel&#34; target=&#34;_blank&#34;&gt;Pixel&lt;/a&gt; which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.&lt;/p&gt;
 
 &lt;h3 id=&#34;training-the-neural-net&#34;&gt;Training the Neural Net&lt;/h3&gt;
 
@@ -113,6 +113,8 @@ If the player is not within that reasonable forward cone, then do not fire at al
 &lt;p&gt;The Machine Learning and Data Science ecosystem in Go is growing, and there are lots of exciting opportunties to contribute to a wide variety of projects - including TensorFlow.&lt;/p&gt;
 
 &lt;p&gt;In the near future, I plan to push this to GitHub as I had a number of requests at both GopherCon and PyCon to do so and would love to see others learn from this project as well as help to develop and expand its capabilities.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Update 08/29/17 - Full Source Code is now live on &lt;a href=&#34;https://github.com/ActiveState/neuroblast&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;!&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;If you want to ask questions about this project, feel free to hit me up on Twitter &lt;a href=&#34;https://twitter.com/rawktron&#34; target=&#34;_blank&#34;&gt;@rawktron&lt;/a&gt;.&lt;/p&gt;
 </description>

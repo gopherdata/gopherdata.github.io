@@ -196,9 +196,9 @@
     <div class="article-style" itemprop="articleBody">
       
 
-<p><em>Based on a lightning talk given at GopherCon 2017 &ldquo;Building an ML-Powered Game AI using TensorFlow in Go&rdquo; <a href="https://www.youtube.com/watch?v=oiorteQg9n0&amp;t=53s" target="_blank">Video</a> / <a href="https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow" target="_blank">Slides</a></em></p>
+<p><em>Based on a lightning talk given at GopherCon 2017 &ldquo;Building an ML-Powered Game AI using TensorFlow in Go&rdquo; <a href="https://www.youtube.com/watch?v=oiorteQg9n0" target="_blank">Video</a> / <a href="https://github.com/gophercon/2017-talks/tree/master/lightningtalks/PeteGarcin-BuildingMLPoweredGameAIwithTensorFlow" target="_blank">Slides</a></em></p>
 
-<p>(Author: Pete Garcin, Developer Advocate @ ActiveState, @rawktron on <a href="https://twitter.com/rawktron" target="_blank">Twitter</a> and @peteg on Gophers Slack)</p>
+<p>(Author: Pete Garcin, Developer Advocate @ <a href="https://activestate.com" target="_blank">ActiveState</a>, @rawktron on <a href="https://twitter.com/rawktron" target="_blank">Twitter</a> and @peteg on Gophers Slack)</p>
 
 <p>For GopherCon, we wanted to demonstrate some of the capabilities of the emerging machine learning and data science ecosystem in Go. Originally built as a demo for PyCon, I had put together a simple arcade space shooter game that features enemies powered by machine learning. It was a fun way to get folks engaged at conferences and to learn about the growing library of tools that are available. It also gave me an opportunity to build something non-trivial using machine learning techniques, and my background in games made this kind of interactive demo a good fit.</p>
 
@@ -210,7 +210,7 @@
 
 <p>It is worth noting that the Go TensorFlow client currently does not support training models, and so we relied on a model that was previously trained using the Python version of the game and then exported using the <code>SavedModelBuilder</code> functionality in order to load it in Go. This will export a TensorFlow graph as a protocol buffer and allow it to be loaded in Go using the <code>LoadSavedModel</code> function.</p>
 
-<p>For the game portion, I used a library called <a href="github.com/faiface/pixel" target="_blank">Pixel</a> which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.</p>
+<p>For the game portion, I used a library called <a href="https://github.com/faiface/pixel" target="_blank">Pixel</a> which is still early in development but has a really active community, and offered excellent stability and performance. I was pretty performance conscious when building and porting the game, so there are certain limitations such as non-pixel-perfect collisions, in order to ensure that the game could run acceptably under all conditions.</p>
 
 <h3 id="training-the-neural-net">Training the Neural Net</h3>
 
@@ -291,6 +291,8 @@ If the player is not within that reasonable forward cone, then do not fire at al
 <p>The Machine Learning and Data Science ecosystem in Go is growing, and there are lots of exciting opportunties to contribute to a wide variety of projects - including TensorFlow.</p>
 
 <p>In the near future, I plan to push this to GitHub as I had a number of requests at both GopherCon and PyCon to do so and would love to see others learn from this project as well as help to develop and expand its capabilities.</p>
+
+<p><em>Update 08/29/17 - Full Source Code is now live on <a href="https://github.com/ActiveState/neuroblast" target="_blank">GitHub</a>!</em></p>
 
 <p>If you want to ask questions about this project, feel free to hit me up on Twitter <a href="https://twitter.com/rawktron" target="_blank">@rawktron</a>.</p>
 
