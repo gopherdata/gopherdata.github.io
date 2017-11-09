@@ -14,6 +14,15 @@
     
     <url>
     
+      <loc>http://gopherdata.io/post/more_go_based_workflow_tools_in_bioinformatics/</loc>
+      <lastmod>2017-11-02T23:10:02+01:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/</loc>
       <lastmod>2017-08-10T08:43:45+10:00</lastmod>
     </url>
@@ -142,6 +151,16 @@
     
     <url>
     
+      <loc>http://gopherdata.io/tags/bioinformatics/</loc>
+      <lastmod>2017-11-02T23:10:02+01:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>http://gopherdata.io/categories/</loc>
       <priority>0</priority>
     </url>
@@ -213,6 +232,16 @@
     
       <loc>http://gopherdata.io/tags/</loc>
       <lastmod>2017-01-01T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>http://gopherdata.io/tags/workflows/</loc>
+      <lastmod>2017-11-02T23:10:02+01:00</lastmod>
       <priority>0</priority>
     </url>
     

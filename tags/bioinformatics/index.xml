@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bioinformatics on GopherData</title>
+    <link>http://gopherdata.io/tags/bioinformatics/</link>
+    <description>Recent content in Bioinformatics on GopherData</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2017 GopherData</copyright>
+    <lastBuildDate>Thu, 02 Nov 2017 23:10:02 +0100</lastBuildDate>
+    <atom:link href="/tags/bioinformatics/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>More Go-based Workflow Tools in Bioinformatics</title>
+      <link>http://gopherdata.io/post/more_go_based_workflow_tools_in_bioinformatics/</link>
+      <pubDate>Thu, 02 Nov 2017 23:10:02 +0100</pubDate>
+      
+      <guid>http://gopherdata.io/post/more_go_based_workflow_tools_in_bioinformatics/</guid>
+      <description>
+
+&lt;p&gt;It is an exciting time for Go as a data science language and for the
+&lt;a href=&#34;http://gopherdata.io/&#34; target=&#34;_blank&#34;&gt;#gopherdata&lt;/a&gt; movement. The
+&lt;a href=&#34;https://github.com/gopherdata/resources/tree/master/tooling&#34; target=&#34;_blank&#34;&gt;ecosystem of tools&lt;/a&gt;
+is constantly improving, with both general purpose tools (e.g., for dataframes and
+statistical analyses) and more specialised ones (e.g., for neural networks and
+graph-based algorithms) popping up every day.&lt;/p&gt;
+
+&lt;p&gt;Recent weeks have been particularly exciting for those involved in the
+bioinformatics field. In addition to generic libraries for bioinformatics such
+as &lt;a href=&#34;https://github.com/biogo/biogo&#34; target=&#34;_blank&#34;&gt;bíogo&lt;/a&gt;, which was recently reviewed in quite some detail in a two blog posts
+(&lt;a href=&#34;https://medium.com/@boti_ka/a-gentle-introduction-to-b%C3%ADogo-part-i-65dbd40e31d4&#34; target=&#34;_blank&#34;&gt;part I&lt;/a&gt;
+and &lt;a href=&#34;https://medium.com/@boti_ka/a-gentle-introduction-to-bíogo-part-ii-1f0df1cf72f0&#34; target=&#34;_blank&#34;&gt;part II&lt;/a&gt;),
+the ecosystem of scientific workflow tools focusing on or being used in
+bioinformatics is also growing: Last week, another Go-based workflow
+orchestration tool, &lt;a href=&#34;https://github.com/grailbio/reflow&#34; target=&#34;_blank&#34;&gt;Reflow&lt;/a&gt;, was released
+as open source, by life science startup &lt;a href=&#34;https://grail.com/&#34; target=&#34;_blank&#34;&gt;Grail Inc&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Reflow brings a number of interesting features to the
+table including: (i)&amp;nbsp;comprehensive and very easy-to-use Amazon Web
+Services (AWS) integration, (ii)&amp;nbsp;memoization features based on S3
+storage, and (iii)&amp;nbsp;ability to run the same, docker-based workflow on your
+local computer or on AWS.&lt;/p&gt;
+
+&lt;p&gt;Because we are users of and contributors to two other existing Go-based
+workflow projects (&lt;a href=&#34;http://pachyderm.io/&#34; target=&#34;_blank&#34;&gt;Pachyderm&lt;/a&gt; and
+&lt;a href=&#34;http://scipipe.org/&#34; target=&#34;_blank&#34;&gt;SciPipe&lt;/a&gt;), we thought that a brief comparison of the
+different approaches would be useful. In particular, we hope that this summary
+helps highlight differences between the tools, guide users to appropriate
+workflow and orchestration tools, and/or provide a jumping-off-point for
+contributions and experimentation&lt;/p&gt;
+
+&lt;h2 id=&#34;workflow-tools-in-bio-and-cheminformatics&#34;&gt;Workflow Tools in Bio- and Cheminformatics&lt;/h2&gt;
+
+&lt;p&gt;Before we continue, lets step back and add a few words about what workflow
+tools are and why they are relevant in Bioinformatics (or Science in general),
+for anyone new to the term.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Scientific_workflow_system&#34; target=&#34;_blank&#34;&gt;Scientific workflow tools&lt;/a&gt; are tools or
+systems designed to help coordinate computations when the number of computation
+steps is very large and/or the steps have complex dependencies between their
+input and output data. This is common in many scientific fields, but it is
+common in bioinformatics in particular, because of the vast plethora of tools
+built to analyse the extremely heterogenous data types describing biological
+organisms, from molecules to cells to organs to full body physiology.&lt;/p&gt;
+
+&lt;p&gt;Common tasks in bioinformatics necessitating the use of workflow tools include
+(DNA) sequence alignment, (gene) variant calling, RNA quantification, and more.
+In the related field of cheminformatics, workflow tools are often used to build
+predictive models relating the chemical structure of drug compounds to some
+measurable property of the compound, in what is commonly called Quantitative
+Structure Activity Relationship (QSAR). Examples of such properties are the
+level of binding to protein targets in the body, or various chemical properties
+such as solubility, that might affect its potential for update in the body.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-go-bioinformatics-workflow-tooling-ecosystem&#34;&gt;The Go bioinformatics workflow tooling ecosystem&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://gopherdata.io/img/wftools/gopher_thinking_workflows.png&#34; alt=&#34;Gopher thinking about workflows, surrounded by workflow tool logos&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The main Go-based workflow tools that have targeted bioinformatics workflows
+(or have been used to implement bioinformatics workflows) are:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;http://pachyderm.io/&#34; target=&#34;_blank&#34;&gt;Pachyderm&lt;/a&gt;&lt;/strong&gt; - This platform allows users to build
+scalable, containerized data pipelines using any language or framework, while
+also getting the right data to the right code as both data and code change over
+time. Individual pipeline stages are defined by docker images and can be
+individually parallelized across large data sets (by leveraging
+&lt;a href=&#34;https://kubernetes.io/&#34; target=&#34;_blank&#34;&gt;Kubernetes&lt;/a&gt; under the hood).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;http://scipipe.org/&#34; target=&#34;_blank&#34;&gt;SciPipe&lt;/a&gt;&lt;/strong&gt; - This tool is a much smaller than something
+like Pachyderm and is focused on highly dynamic workflow constructs in
+which on-line scheduling is key. SciPipe also focuses, thus far, on workflows
+that run on HPC clusters and local computers.  Although, it can be integrated
+in a more comprehensive framework, such as Pachyderm or Reflow.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/MG-RAST/AWE&#34; target=&#34;_blank&#34;&gt;AWE&lt;/a&gt;&lt;/strong&gt; - The AWE framework is a
+comprehensive bioinformatics system targeting the cloud. It reportedly
+comes with multi-cloud support and, as it seems, HPC support, and AWE allows
+users to leverage the &lt;a href=&#34;http://www.commonwl.org/&#34; target=&#34;_blank&#34;&gt;Common Workflow Language (CWL)&lt;/a&gt;. As
+with Reflow, we don’t have hands-on experience with AWE, so our comments
+are limited to what we’ve read in the documentation and examples.&lt;/p&gt;
+
+&lt;h2 id=&#34;comparing-reflow-and-pachyderm&#34;&gt;Comparing Reflow and Pachyderm&lt;/h2&gt;
+
+&lt;p&gt;Reflow and Pachyderm seems to be closest at first glance. Both frameworks
+utilize containers as the main unit of data processing. However, there are some
+differences in both workflow orchestration and data storage/management that we
+will stress below.&lt;/p&gt;
+
+&lt;h3 id=&#34;orchestration&#34;&gt;Orchestration&lt;/h3&gt;
+
+&lt;p&gt;While Reflow implements custom “runners” for each target environment (AWS and
+your local machine currently), Pachyderm leverages Kubernetes under-the-hood
+for container orchestration. This use of Kubernetes allows Pachyderm to
+be maximally vendor-agnostic, as Kubernetes is widely deployed in all the
+major clouds and on-premise. Reflow authors are reportedly planning to
+support other cloud providers, like GCP, in the near future though, but
+this effort seems to require writing custom runner code per target
+environment/cloud.&lt;/p&gt;
+
+&lt;p&gt;use of Kubernetes also allows Pachyderm to matically bring certain
+orchestration functionality into a nformatics context that has otherwise
+propelled Kubernetes to become industry leader in orchestration. More
+specifically, Pachyderm lines are automatically “self-healing” in that they are
+rescheduled and restarted when cluster nodes or jobs fail, and Pachyderm is
+able to optimally schedule work across high-value nodes (e.g., high-CPU or GPU
+nodes) using methods such as auto-scaling.  Reflow appears to use it’s own
+logic to match workloads with available instance types.&lt;/p&gt;
+
+&lt;p&gt;Finally, Pachyderm and Reflow have differences in the way workflows are
+actually defined.  Pachyderm leverages the established JSON/YAML format that is
+common in the Kubernetes community, and Reflow implements what seems to be its
+own readable, Go-inspired domain specific language (DSL).&lt;/p&gt;
+
+&lt;h3 id=&#34;data-storage-management&#34;&gt;Data Storage/Management&lt;/h3&gt;
+
+&lt;p&gt;For the data that is to be processed in workflow stages, Reflow provides an
+interesting memoization mechanism based on S3, with automatic re-runs triggered
+by updates to data. Similarly, Pachyderm provides a familiar, git-inspired
+versioned data store, where new versions of data in the versioned data store
+are also used to automatically trigger relevant parts of the workflow.
+Pachyderm’s data store can be backed by any of the popular vendor-specific
+object stores (GCS in GCP, S3 in AWS, or Blob Storage in Azure) or any other
+object store with an S3-compatible API (e.g., an open source option like
+Minio).&lt;/p&gt;
+
+&lt;p&gt;In terms of metadata associated with jobs, versions of data, etc., Reflow
+appears to use a Reflow-specific cache based on S3 and DynamoDB. In
+contrast, Pachyderm utilizes etcd, a distributed key-value store, for metadata.&lt;/p&gt;
+
+&lt;p&gt;Lastly with regard to data sharding and parallelization, Pachyderm seems to go
+further than Reflow. While Reflow does parallelise tools running on separate
+data sets, Pachyderm also provides automatic parallelisation of tools accessing
+“datums” that may correspond to the same data set or even the same
+file. Pachyderm automatically distributes the processing of these datums to
+containers running in parallel (pods in Kubernetes) and gathers all of the
+results back into a single logical collection of data. Pachyderm thus provides
+what other frameworks like Hadoop and Spark are promising, but without the need
+to replace legacy code and tools with code written in the MapReduce-style or
+explicitly implement parallelism and data sharding in code.&lt;/p&gt;
+
+&lt;p&gt;With these notes in mind, we think Reflow and Pachyderm are addressing slightly
+different user needs. While Reflow seems to be an excellent choice for a quick
+setup on AWS or a local docker-based server, we think Pachyderm will generally
+provide more vendor agnosticity, better parallelisation, and valuable
+optimizations and updates that come out of the growing
+Kubernetes community. Finally, we think that Pachyderm provides a stronger
+foundation for rigorous and manageable data science with its unified data
+versioning system, which can help data scientists and engineers better
+understand data, collaborate, perform tests, share workflows, and so on.&lt;/p&gt;
+
+&lt;h2 id=&#34;how-does-scipipe-compare&#34;&gt;How does SciPipe compare?&lt;/h2&gt;
+
+&lt;p&gt;SciPipe is, in this context, more of an apples-to-oranges comparison to
+Pachyderm, Reflow or AWE. While Reflow and Pachyderm provides an integrated
+tool encapsulation solution based on containers, SciPipe (in its current
+form) is primarily focused on managing command-line driven workflows on local
+computers or HPC clusters with a shared file system, where containers might not
+be an option. However, there are also other relevant differences related to
+complexity of the tools, workflow implementation, and deployment/integration:&lt;/p&gt;
+
+&lt;h3 id=&#34;complexity&#34;&gt;Complexity&lt;/h3&gt;
+
+&lt;p&gt;SciPipe is also a much smaller tool in many ways. For example, a very simple
+count of LOC for the three frameworks shows that SciPipe is implemented with
+more than an order of magnitude less lines of code than the other tools:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOPATH/src/github.com/grailbio/reflow
+$ find | grep &amp;quot;\.go&amp;quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &amp;quot;^\/\/&amp;quot; | sed &#39;/^\s*$/d&#39; | wc -l
+26371
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOPATH/src/github.com/pachyderm/pachyderm/src
+$ find | grep &amp;quot;\.go&amp;quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &amp;quot;^\/\/&amp;quot; | sed &#39;/^\s*$/d&#39; | wc -l
+25778
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOPATH/src/github.com/MG-RAST/AWE
+$ find | grep &amp;quot;\.go&amp;quot; | grep -vP &amp;quot;(vendor|examples|_test)&amp;quot; | xargs cat | grep -vP &amp;quot;^\/\/&amp;quot; | sed &#39;/^\s*$/d&#39; | wc -l
+24485
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOPATH/src/github.com/scipipe/scipipe
+$ find | grep &amp;quot;\.go&amp;quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &amp;quot;^\/\/&amp;quot; | sed &#39;/^\s*$/d&#39; | wc -l
+1699
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;workflow-implementation&#34;&gt;Workflow Implementation&lt;/h3&gt;
+
+&lt;p&gt;Further, SciPipe was designed to primarily support highly dynamic workflow
+constructs, where dynamic/on-line scheduling is needed. These workflows include
+scenarios in which you are continuously chunking up and computing a dataset of
+unknown size or parametrising parts of the workflow with parameter values
+extracted in an earlier part of the workflow. An example of the former would
+be lazily processing data extracted from a database without saving the
+temporary output to disk. An example of the latter would be doing a parameter
+optimisation to select, e.g., good gamma and cost values for libSVM before
+actually training the model with the obtained parameters.&lt;/p&gt;
+
+&lt;p&gt;Also, where Pachyderm and Reflow provide manifest formats or DSLs for writing
+workflows, SciPipe lets you write workflows directly in Go. SciPipe is,
+thus, consumed as a programming-library rather than a framework.
+This feature might scare off some users intimidated by Go’s relative
+verboseness compared to specialized DSLs, but it also allows users to leverage
+extremely powerful existing tooling and editor support for Go.&lt;/p&gt;
+
+&lt;h3 id=&#34;deployment-integration&#34;&gt;Deployment/Integration&lt;/h3&gt;
+
+&lt;p&gt;What is perhaps most interesting in the context of this comparison is the fact
+that SciPipe workflows can be compiled to small static binaries. This
+compilation makes it very easy to package up smaller SciPipe workflows in
+individual containers and integrate them into tools like Pachyderm or Reflow or
+other services. We thus imagine that SciPipe could be a complement to Pachyderm
+or Reflow when highly dynamic workflow constructs are needed, which constructs
+may be a challenge to implement in the manifests and DSLs of Pachyderm or
+Reflow.&lt;/p&gt;
+
+&lt;h2 id=&#34;reflow-and-awe&#34;&gt;Reflow and AWE?&lt;/h2&gt;
+
+&lt;p&gt;We know the least about AWE at this point, so we don’t want to venture too far
+into a detailed comparison with Reflow (which is also new to us). However,
+based on our reading of online materials, we can note that they seem to share
+the focus on bioinformatics and cloud support. AWE additionally supports Common
+Workflow Language and HPC clusters. We expect there to be some differences in
+terms of storage, because AWE ships with its own storage solution and isn’t
+based on a cloud offering like S3. Past that, we will leave it to the authors
+of AWE and Reflow or the community to provide more comprehensive comparisons.&lt;/p&gt;
+
+&lt;h2 id=&#34;in-summary&#34;&gt;In Summary&lt;/h2&gt;
+
+&lt;p&gt;In summary, we think that it is extremely exciting and reassuring to see
+continued innovation in the Go Data Science ecosystem, and we are excited to
+see more and more data gophers and projects join the community.  We also hope
+this little overview will help users navigate the growing ecosystem of workflow
+tools by highlighting some of their inherent differences.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/smllmp&#34; target=&#34;_blank&#34;&gt;Samuel Lampa&lt;/a&gt;, PhD Student at &lt;a href=&#34;http://pharmb.io&#34; target=&#34;_blank&#34;&gt;Uppsala University&lt;/a&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.linkedin.com/in/jon-ander-novella/&#34; target=&#34;_blank&#34;&gt;Jon Ander Novella&lt;/a&gt;, Research Assistant at &lt;a href=&#34;http://pharmb.io&#34; target=&#34;_blank&#34;&gt;Uppsala University&lt;/a&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/dwhitena&#34; target=&#34;_blank&#34;&gt;Daniel Whitenack&lt;/a&gt;, Data Scientist and Lead Developer Advocate at &lt;a href=&#34;http://pachyderm.io&#34; target=&#34;_blank&#34;&gt;Pachyderm Inc.&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

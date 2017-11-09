@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.27-DEV" />
+  <meta name="author" content="GopherData">
+  <meta name="description" content="Users and developers of Go data processing, analytics, and visualization tools.">
+
+  
+  
+  
+    
+  
+  
+    
+    
+    <link rel="stylesheet" href="/css/highlight.min.css">
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.0/css/academicons.min.css" integrity="sha512-GGGNUPDhnG8LEAEDsjqYIQns+Gu8RBs4j5XGlxl7UfRaZBhCCm5jenJkeJL8uPuOXGqgl8/H1gjlWQDRjd3cUQ==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather%7CRoboto+Mono">
+  <link rel="stylesheet" href="/css/hugo-academic.css">
+  
+
+  
+
+  <link rel="alternate" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+  <link rel="feed" href="http://gopherdata.io/index.xml" type="application/rss+xml" title="GopherData">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/apple-touch-icon.png">
+
+  <link rel="canonical" href="http://gopherdata.io/post/more_go_based_workflow_tools_in_bioinformatics/">
+
+  
+
+  <title>More Go-based Workflow Tools in Bioinformatics | GopherData</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71">
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">GopherData</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#talks">
+            
+            <span>Events</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Posts</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        <li class="nav-item">
+          <a href="http://github.com/gopherdata/resources">
+            
+            <span>Resources</span>
+          </a>
+        </li>
+
+        
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">More Go-based Workflow Tools in Bioinformatics</h1>
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    <time datetime="2017-11-02 23:10:02 &#43;0100 &#43;0100" itemprop="datePublished">
+      Thu, Nov 2, 2017
+    </time>
+  </span>
+
+  
+
+  
+  
+  
+  <span class="article-tags">
+    <i class="fa fa-tags"></i>
+    
+    <a href="/tags/workflows">workflows</a
+    >, 
+    
+    <a href="/tags/bioinformatics">bioinformatics</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=http%3a%2f%2fgopherdata.io%2fpost%2fmore_go_based_workflow_tools_in_bioinformatics%2f"
+         target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=More%20Go-based%20Workflow%20Tools%20in%20Bioinformatics&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fmore_go_based_workflow_tools_in_bioinformatics%2f"
+         target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fgopherdata.io%2fpost%2fmore_go_based_workflow_tools_in_bioinformatics%2f&amp;title=More%20Go-based%20Workflow%20Tools%20in%20Bioinformatics"
+         target="_blank">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=http%3a%2f%2fgopherdata.io%2fpost%2fmore_go_based_workflow_tools_in_bioinformatics%2f&amp;title=More%20Go-based%20Workflow%20Tools%20in%20Bioinformatics"
+         target="_blank">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=More%20Go-based%20Workflow%20Tools%20in%20Bioinformatics&amp;body=http%3a%2f%2fgopherdata.io%2fpost%2fmore_go_based_workflow_tools_in_bioinformatics%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p>It is an exciting time for Go as a data science language and for the
+<a href="http://gopherdata.io/" target="_blank">#gopherdata</a> movement. The
+<a href="https://github.com/gopherdata/resources/tree/master/tooling" target="_blank">ecosystem of tools</a>
+is constantly improving, with both general purpose tools (e.g., for dataframes and
+statistical analyses) and more specialised ones (e.g., for neural networks and
+graph-based algorithms) popping up every day.</p>
+
+<p>Recent weeks have been particularly exciting for those involved in the
+bioinformatics field. In addition to generic libraries for bioinformatics such
+as <a href="https://github.com/biogo/biogo" target="_blank">bíogo</a>, which was recently reviewed in quite some detail in a two blog posts
+(<a href="https://medium.com/@boti_ka/a-gentle-introduction-to-b%C3%ADogo-part-i-65dbd40e31d4" target="_blank">part I</a>
+and <a href="https://medium.com/@boti_ka/a-gentle-introduction-to-bíogo-part-ii-1f0df1cf72f0" target="_blank">part II</a>),
+the ecosystem of scientific workflow tools focusing on or being used in
+bioinformatics is also growing: Last week, another Go-based workflow
+orchestration tool, <a href="https://github.com/grailbio/reflow" target="_blank">Reflow</a>, was released
+as open source, by life science startup <a href="https://grail.com/" target="_blank">Grail Inc</a>.</p>
+
+<p>Reflow brings a number of interesting features to the
+table including: (i)&nbsp;comprehensive and very easy-to-use Amazon Web
+Services (AWS) integration, (ii)&nbsp;memoization features based on S3
+storage, and (iii)&nbsp;ability to run the same, docker-based workflow on your
+local computer or on AWS.</p>
+
+<p>Because we are users of and contributors to two other existing Go-based
+workflow projects (<a href="http://pachyderm.io/" target="_blank">Pachyderm</a> and
+<a href="http://scipipe.org/" target="_blank">SciPipe</a>), we thought that a brief comparison of the
+different approaches would be useful. In particular, we hope that this summary
+helps highlight differences between the tools, guide users to appropriate
+workflow and orchestration tools, and/or provide a jumping-off-point for
+contributions and experimentation</p>
+
+<h2 id="workflow-tools-in-bio-and-cheminformatics">Workflow Tools in Bio- and Cheminformatics</h2>
+
+<p>Before we continue, lets step back and add a few words about what workflow
+tools are and why they are relevant in Bioinformatics (or Science in general),
+for anyone new to the term.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Scientific_workflow_system" target="_blank">Scientific workflow tools</a> are tools or
+systems designed to help coordinate computations when the number of computation
+steps is very large and/or the steps have complex dependencies between their
+input and output data. This is common in many scientific fields, but it is
+common in bioinformatics in particular, because of the vast plethora of tools
+built to analyse the extremely heterogenous data types describing biological
+organisms, from molecules to cells to organs to full body physiology.</p>
+
+<p>Common tasks in bioinformatics necessitating the use of workflow tools include
+(DNA) sequence alignment, (gene) variant calling, RNA quantification, and more.
+In the related field of cheminformatics, workflow tools are often used to build
+predictive models relating the chemical structure of drug compounds to some
+measurable property of the compound, in what is commonly called Quantitative
+Structure Activity Relationship (QSAR). Examples of such properties are the
+level of binding to protein targets in the body, or various chemical properties
+such as solubility, that might affect its potential for update in the body.</p>
+
+<h2 id="the-go-bioinformatics-workflow-tooling-ecosystem">The Go bioinformatics workflow tooling ecosystem</h2>
+
+<p><img src="/img/wftools/gopher_thinking_workflows.png" alt="Gopher thinking about workflows, surrounded by workflow tool logos" /></p>
+
+<p>The main Go-based workflow tools that have targeted bioinformatics workflows
+(or have been used to implement bioinformatics workflows) are:</p>
+
+<p><strong><a href="http://pachyderm.io/" target="_blank">Pachyderm</a></strong> - This platform allows users to build
+scalable, containerized data pipelines using any language or framework, while
+also getting the right data to the right code as both data and code change over
+time. Individual pipeline stages are defined by docker images and can be
+individually parallelized across large data sets (by leveraging
+<a href="https://kubernetes.io/" target="_blank">Kubernetes</a> under the hood).</p>
+
+<p><strong><a href="http://scipipe.org/" target="_blank">SciPipe</a></strong> - This tool is a much smaller than something
+like Pachyderm and is focused on highly dynamic workflow constructs in
+which on-line scheduling is key. SciPipe also focuses, thus far, on workflows
+that run on HPC clusters and local computers.  Although, it can be integrated
+in a more comprehensive framework, such as Pachyderm or Reflow.</p>
+
+<p><strong><a href="https://github.com/MG-RAST/AWE" target="_blank">AWE</a></strong> - The AWE framework is a
+comprehensive bioinformatics system targeting the cloud. It reportedly
+comes with multi-cloud support and, as it seems, HPC support, and AWE allows
+users to leverage the <a href="http://www.commonwl.org/" target="_blank">Common Workflow Language (CWL)</a>. As
+with Reflow, we don’t have hands-on experience with AWE, so our comments
+are limited to what we’ve read in the documentation and examples.</p>
+
+<h2 id="comparing-reflow-and-pachyderm">Comparing Reflow and Pachyderm</h2>
+
+<p>Reflow and Pachyderm seems to be closest at first glance. Both frameworks
+utilize containers as the main unit of data processing. However, there are some
+differences in both workflow orchestration and data storage/management that we
+will stress below.</p>
+
+<h3 id="orchestration">Orchestration</h3>
+
+<p>While Reflow implements custom “runners” for each target environment (AWS and
+your local machine currently), Pachyderm leverages Kubernetes under-the-hood
+for container orchestration. This use of Kubernetes allows Pachyderm to
+be maximally vendor-agnostic, as Kubernetes is widely deployed in all the
+major clouds and on-premise. Reflow authors are reportedly planning to
+support other cloud providers, like GCP, in the near future though, but
+this effort seems to require writing custom runner code per target
+environment/cloud.</p>
+
+<p>use of Kubernetes also allows Pachyderm to matically bring certain
+orchestration functionality into a nformatics context that has otherwise
+propelled Kubernetes to become industry leader in orchestration. More
+specifically, Pachyderm lines are automatically “self-healing” in that they are
+rescheduled and restarted when cluster nodes or jobs fail, and Pachyderm is
+able to optimally schedule work across high-value nodes (e.g., high-CPU or GPU
+nodes) using methods such as auto-scaling.  Reflow appears to use it’s own
+logic to match workloads with available instance types.</p>
+
+<p>Finally, Pachyderm and Reflow have differences in the way workflows are
+actually defined.  Pachyderm leverages the established JSON/YAML format that is
+common in the Kubernetes community, and Reflow implements what seems to be its
+own readable, Go-inspired domain specific language (DSL).</p>
+
+<h3 id="data-storage-management">Data Storage/Management</h3>
+
+<p>For the data that is to be processed in workflow stages, Reflow provides an
+interesting memoization mechanism based on S3, with automatic re-runs triggered
+by updates to data. Similarly, Pachyderm provides a familiar, git-inspired
+versioned data store, where new versions of data in the versioned data store
+are also used to automatically trigger relevant parts of the workflow.
+Pachyderm’s data store can be backed by any of the popular vendor-specific
+object stores (GCS in GCP, S3 in AWS, or Blob Storage in Azure) or any other
+object store with an S3-compatible API (e.g., an open source option like
+Minio).</p>
+
+<p>In terms of metadata associated with jobs, versions of data, etc., Reflow
+appears to use a Reflow-specific cache based on S3 and DynamoDB. In
+contrast, Pachyderm utilizes etcd, a distributed key-value store, for metadata.</p>
+
+<p>Lastly with regard to data sharding and parallelization, Pachyderm seems to go
+further than Reflow. While Reflow does parallelise tools running on separate
+data sets, Pachyderm also provides automatic parallelisation of tools accessing
+“datums” that may correspond to the same data set or even the same
+file. Pachyderm automatically distributes the processing of these datums to
+containers running in parallel (pods in Kubernetes) and gathers all of the
+results back into a single logical collection of data. Pachyderm thus provides
+what other frameworks like Hadoop and Spark are promising, but without the need
+to replace legacy code and tools with code written in the MapReduce-style or
+explicitly implement parallelism and data sharding in code.</p>
+
+<p>With these notes in mind, we think Reflow and Pachyderm are addressing slightly
+different user needs. While Reflow seems to be an excellent choice for a quick
+setup on AWS or a local docker-based server, we think Pachyderm will generally
+provide more vendor agnosticity, better parallelisation, and valuable
+optimizations and updates that come out of the growing
+Kubernetes community. Finally, we think that Pachyderm provides a stronger
+foundation for rigorous and manageable data science with its unified data
+versioning system, which can help data scientists and engineers better
+understand data, collaborate, perform tests, share workflows, and so on.</p>
+
+<h2 id="how-does-scipipe-compare">How does SciPipe compare?</h2>
+
+<p>SciPipe is, in this context, more of an apples-to-oranges comparison to
+Pachyderm, Reflow or AWE. While Reflow and Pachyderm provides an integrated
+tool encapsulation solution based on containers, SciPipe (in its current
+form) is primarily focused on managing command-line driven workflows on local
+computers or HPC clusters with a shared file system, where containers might not
+be an option. However, there are also other relevant differences related to
+complexity of the tools, workflow implementation, and deployment/integration:</p>
+
+<h3 id="complexity">Complexity</h3>
+
+<p>SciPipe is also a much smaller tool in many ways. For example, a very simple
+count of LOC for the three frameworks shows that SciPipe is implemented with
+more than an order of magnitude less lines of code than the other tools:</p>
+
+<pre><code class="language-bash">$ cd $GOPATH/src/github.com/grailbio/reflow
+$ find | grep &quot;\.go&quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &quot;^\/\/&quot; | sed '/^\s*$/d' | wc -l
+26371
+</code></pre>
+
+<pre><code class="language-bash">$ cd $GOPATH/src/github.com/pachyderm/pachyderm/src
+$ find | grep &quot;\.go&quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &quot;^\/\/&quot; | sed '/^\s*$/d' | wc -l
+25778
+</code></pre>
+
+<pre><code class="language-bash">$ cd $GOPATH/src/github.com/MG-RAST/AWE
+$ find | grep &quot;\.go&quot; | grep -vP &quot;(vendor|examples|_test)&quot; | xargs cat | grep -vP &quot;^\/\/&quot; | sed '/^\s*$/d' | wc -l
+24485
+</code></pre>
+
+<pre><code class="language-bash">$ cd $GOPATH/src/github.com/scipipe/scipipe
+$ find | grep &quot;\.go&quot; | grep -vP “(vendor|examples|_test)” | xargs cat | grep -vP &quot;^\/\/&quot; | sed '/^\s*$/d' | wc -l
+1699
+</code></pre>
+
+<h3 id="workflow-implementation">Workflow Implementation</h3>
+
+<p>Further, SciPipe was designed to primarily support highly dynamic workflow
+constructs, where dynamic/on-line scheduling is needed. These workflows include
+scenarios in which you are continuously chunking up and computing a dataset of
+unknown size or parametrising parts of the workflow with parameter values
+extracted in an earlier part of the workflow. An example of the former would
+be lazily processing data extracted from a database without saving the
+temporary output to disk. An example of the latter would be doing a parameter
+optimisation to select, e.g., good gamma and cost values for libSVM before
+actually training the model with the obtained parameters.</p>
+
+<p>Also, where Pachyderm and Reflow provide manifest formats or DSLs for writing
+workflows, SciPipe lets you write workflows directly in Go. SciPipe is,
+thus, consumed as a programming-library rather than a framework.
+This feature might scare off some users intimidated by Go’s relative
+verboseness compared to specialized DSLs, but it also allows users to leverage
+extremely powerful existing tooling and editor support for Go.</p>
+
+<h3 id="deployment-integration">Deployment/Integration</h3>
+
+<p>What is perhaps most interesting in the context of this comparison is the fact
+that SciPipe workflows can be compiled to small static binaries. This
+compilation makes it very easy to package up smaller SciPipe workflows in
+individual containers and integrate them into tools like Pachyderm or Reflow or
+other services. We thus imagine that SciPipe could be a complement to Pachyderm
+or Reflow when highly dynamic workflow constructs are needed, which constructs
+may be a challenge to implement in the manifests and DSLs of Pachyderm or
+Reflow.</p>
+
+<h2 id="reflow-and-awe">Reflow and AWE?</h2>
+
+<p>We know the least about AWE at this point, so we don’t want to venture too far
+into a detailed comparison with Reflow (which is also new to us). However,
+based on our reading of online materials, we can note that they seem to share
+the focus on bioinformatics and cloud support. AWE additionally supports Common
+Workflow Language and HPC clusters. We expect there to be some differences in
+terms of storage, because AWE ships with its own storage solution and isn’t
+based on a cloud offering like S3. Past that, we will leave it to the authors
+of AWE and Reflow or the community to provide more comprehensive comparisons.</p>
+
+<h2 id="in-summary">In Summary</h2>
+
+<p>In summary, we think that it is extremely exciting and reassuring to see
+continued innovation in the Go Data Science ecosystem, and we are excited to
+see more and more data gophers and projects join the community.  We also hope
+this little overview will help users navigate the growing ecosystem of workflow
+tools by highlighting some of their inherent differences.</p>
+
+<hr />
+
+<p><a href="https://twitter.com/smllmp" target="_blank">Samuel Lampa</a>, PhD Student at <a href="http://pharmb.io" target="_blank">Uppsala University</a><br></p>
+
+<p><a href="https://www.linkedin.com/in/jon-ander-novella/" target="_blank">Jon Ander Novella</a>, Research Assistant at <a href="http://pharmb.io" target="_blank">Uppsala University</a><br></p>
+
+<p><a href="https://twitter.com/dwhitena" target="_blank">Daniel Whitenack</a>, Data Scientist and Lead Developer Advocate at <a href="http://pachyderm.io" target="_blank">Pachyderm Inc.</a></p>
+
+    </div>
+  </div>
+
+</article>
+
+<div class="container">
+  <nav>
+  <ul class="pager">
+    
+    <li class="previous"><a href="http://gopherdata.io/post/build_ml_powered_game_ai_tensorflow/"><span
+      aria-hidden="true">&larr;</span> Building an ML-Powered Game AI using TensorFlow in Go</a></li>
+    
+
+    
+  </ul>
+</nav>
+
+</div>
+
+<div class="article-container">
+  
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2017 GopherData &middot; 
+
+      Powered by the <a href="https://github.com/gcushen/hugo-academic" target="_blank">Academic
+      theme</a> for <a href="http://gohugo.io" target="_blank">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.2/imagesloaded.pkgd.min.js" integrity="sha512-iHzEu7GbSc705hE2skyH6/AlTpOfBmkx7nUqTLGzPYR+C1tRaItbRlJ7hT/D3YQ9SV0fqLKzp4XY9wKulTBGTw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" integrity="sha512-Z5heTz36xTemt1TbtbfXtTq5lMfYnOkXM2/eWcTTiLU01+Sw4ku1i7vScDc8fWhrP2abz9GQzgKH5NGBLoYlAw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" integrity="sha512-CDeU7pRtkPX6XJtF/gcFWlEwyaX7mcAp5sO3VIu/ylsdR74wEw4wmBpD5yYTrmMAiAboi9thyBUr1vXRPA7t0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+
+  </body>
+</html>
+
